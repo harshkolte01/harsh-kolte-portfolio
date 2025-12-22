@@ -9,7 +9,6 @@ const About: React.FC = () => {
       <div className={`max-w-3xl mx-auto transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="flex items-center gap-4 mb-12">
           <h2 className="text-3xl font-display font-bold text-slate-200">
-            <span className="text-accent-cyan font-mono text-xl mr-2">01.</span>
             About Me
           </h2>
           <div className="h-[1px] bg-navy-700 flex-grow max-w-xs"></div>

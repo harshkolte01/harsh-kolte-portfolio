@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Github, Linkedin, Send } from 'lucide-react';
+import { Mail, Github, Linkedin, Send, Instagram } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Contact: React.FC = () => {
@@ -44,7 +44,7 @@ const Contact: React.FC = () => {
       <div className={`max-w-4xl mx-auto transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
         <div className="text-center mb-16">
-          <p className="text-accent-cyan font-mono mb-4">05. What's Next?</p>
+          <p className="text-accent-cyan font-mono mb-4">What's Next?</p>
           <h2 className="text-4xl md:text-5xl font-display font-bold text-slate-200 mb-6">Get In Touch</h2>
           <p className="text-slate-400 max-w-lg mx-auto text-lg">
             I'm currently looking for new opportunities. Whether you have a question or just want to say hi, 
@@ -72,6 +72,11 @@ const Contact: React.FC = () => {
                 <a href="https://www.linkedin.com/in/harsh-kolte-458978277/" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-slate-400 hover:text-accent-cyan transition-colors group">
                   <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   <span>LinkedIn Profile</span>
+                </a>
+                
+                <a href="https://www.instagram.com/harshkolte01/" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-slate-400 hover:text-accent-cyan transition-colors group">
+                  <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span>@harshkolte01</span>
                 </a>
               </div>
             </div>

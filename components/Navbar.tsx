@@ -32,7 +32,6 @@ const Navbar: React.FC = () => {
             {navLinks.map((link, idx) => (
               <li key={idx}>
                 <a href={link.href} className="text-slate-300 hover:text-accent-cyan transition-colors">
-                  <span className="text-accent-cyan mr-1">0{idx + 1}.</span>
                   {link.name}
                 </a>
               </li>
@@ -62,12 +61,11 @@ const Navbar: React.FC = () => {
         <ol className="flex flex-col gap-8 font-mono text-lg text-center">
           {navLinks.map((link, idx) => (
             <li key={idx}>
-              <a 
-                href={link.href} 
+              <a
+                href={link.href}
                 className="text-slate-300 hover:text-accent-cyan"
                 onClick={() => setIsOpen(false)}
               >
-                <span className="text-accent-cyan block text-sm mb-1">0{idx + 1}.</span>
                 {link.name}
               </a>
             </li>
