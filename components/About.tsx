@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { siteConfig } from '../data/site';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,35 +56,30 @@ const About: React.FC = () => {
         }
       }
     );
-
   }, { scope: containerRef });
 
   return (
-    <section id="about" className="py-24 px-6 relative" ref={containerRef}>
+    <section id="about" aria-labelledby="about-heading" className="py-24 px-6 relative" ref={containerRef}>
       <div className="max-w-3xl mx-auto">
         <div className="about-header flex items-center gap-4 mb-12 opacity-0 translate-y-10">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-200">
-            About Me
+          <h2 id="about-heading" className="text-3xl md:text-4xl font-display font-bold text-slate-200">
+            About Harsh Kolte
           </h2>
           <div className="h-[1px] bg-navy-700/50 flex-grow max-w-xs ml-4"></div>
         </div>
 
         <div className="about-card glass-card p-8 md:p-10 rounded-2xl opacity-0 relative overflow-hidden group hover:shadow-[0_0_30px_rgba(189,52,254,0.1)] transition-all duration-500">
           <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-accent-purple/10 rounded-full blur-[80px] group-hover:bg-accent-purple/20 transition-colors duration-700"></div>
-          
+
           <div className="relative z-10">
             <p className="about-text text-lg leading-relaxed mb-6 opacity-0 text-slate-300">
-              Hello! My name is Harsh Kolte. I am a passionate Full Stack Software Developer with a deep interest 
-              in bridging the gap between complex backend logic and intuitive frontend design.
+              I am {siteConfig.name}, a full stack developer based in {siteConfig.location}. My work sits at the intersection of strong backend architecture, polished frontend execution, and clear product thinking.
             </p>
             <p className="about-text text-lg leading-relaxed mb-6 opacity-0 text-slate-300">
-              My journey in software engineering has led me to explore the cutting edge of <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-purple font-medium">AI integration</span> in web platforms. 
-              I thrive in challenging environments where I can leverage my adaptability to learn new tools quickly 
-              and deliver high-quality code.
+              I specialize in building with React, Next.js, Node.js, Express, and modern databases. Over the last few years I have focused heavily on <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-purple font-medium">AI integration</span>, authentication flows, data-heavy dashboards, and applications that need both speed and maintainability.
             </p>
             <p className="about-text text-lg leading-relaxed opacity-0 text-slate-300">
-              Whether it's architecting a robust backend with NodeJS or crafting a pixel-perfect interface with React, 
-              I bring a problem-solving mindset and a commitment to excellence to every project.
+              Whether the challenge is designing APIs, shaping analytics experiences, or improving frontend performance, I focus on useful software that solves real user problems and can scale cleanly over time.
             </p>
           </div>
         </div>

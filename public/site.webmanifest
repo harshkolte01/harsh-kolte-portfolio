@@ -1,0 +1,17 @@
+{
+  "name": "Harsh Kolte Portfolio",
+  "short_name": "Harsh Kolte",
+  "description": "Portfolio and resume of Harsh Kolte, full stack developer.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#030014",
+  "theme_color": "#030014",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

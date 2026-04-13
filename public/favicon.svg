@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Harsh Kolte favicon</title>
+  <desc id="desc">Monogram logo with the initials HK on a dark gradient background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a192f" />
+      <stop offset="100%" stop-color="#112240" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64ffda" />
+      <stop offset="100%" stop-color="#bd34fe" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)" />
+  <circle cx="24" cy="24" r="18" fill="#64ffda" opacity="0.18" />
+  <circle cx="112" cy="108" r="28" fill="#bd34fe" opacity="0.14" />
+  <path d="M30 33h12v25h18V33h12v62H60V69H42v26H30z" fill="url(#accent)" />
+  <path d="M81 33h12v21l17-21h15L104 58l23 37h-14L96 67l-3 4v24H81z" fill="#f8fafc" />
+</svg>

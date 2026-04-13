@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Harsh Kolte Open Graph image</title>
+  <desc id="desc">Social sharing image for Harsh Kolte portfolio, full stack developer and AI web app builder.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#030014" />
+      <stop offset="100%" stop-color="#0a192f" />
+    </linearGradient>
+    <radialGradient id="orbA" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#64ffda" stop-opacity="0.42" />
+      <stop offset="100%" stop-color="#64ffda" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="orbB" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#bd34fe" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#bd34fe" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="headline" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#64ffda" />
+      <stop offset="100%" stop-color="#bd34fe" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="165" cy="120" r="170" fill="url(#orbA)" />
+  <circle cx="1020" cy="520" r="210" fill="url(#orbB)" />
+  <circle cx="760" cy="160" r="120" fill="url(#orbA)" opacity="0.6" />
+  <rect x="70" y="70" width="1060" height="490" rx="32" fill="rgba(10, 10, 25, 0.38)" stroke="rgba(255,255,255,0.1)" />
+  <text x="110" y="170" fill="#64ffda" font-family="Inter, Arial, sans-serif" font-size="28" letter-spacing="6">FULL STACK DEVELOPER</text>
+  <text x="110" y="270" fill="#f8fafc" font-family="'Space Grotesk', Inter, Arial, sans-serif" font-size="76" font-weight="700">Harsh Kolte</text>
+  <text x="110" y="350" fill="url(#headline)" font-family="'Space Grotesk', Inter, Arial, sans-serif" font-size="42" font-weight="700">AI-driven web apps with React and Node.js</text>
+  <text x="110" y="420" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="30">Portfolio, projects, experience, resume, and contact.</text>
+  <g transform="translate(110 470)">
+    <rect width="280" height="58" rx="14" fill="rgba(100,255,218,0.08)" stroke="rgba(100,255,218,0.4)" />
+    <text x="28" y="38" fill="#64ffda" font-family="Inter, Arial, sans-serif" font-size="24">Ahmedabad, India</text>
+  </g>
+</svg>
