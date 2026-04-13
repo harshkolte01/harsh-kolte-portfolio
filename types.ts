@@ -5,6 +5,11 @@ export interface Project {
   githubUrl?: string;
   liveUrl?: string;
   features?: string[];
+  category?: string;
+  role?: string;
+  year?: string;
+  impact?: string;
+  tone?: 'blue' | 'teal' | 'orange';
 }
 
 export interface SkillCategory {

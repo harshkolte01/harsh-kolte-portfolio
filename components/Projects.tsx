@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ExternalLink, Eye, Folder, Github, X } from 'lucide-react';
+import React, { useRef } from 'react';
+import { ArrowUpRight, Github } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,179 +8,179 @@ import { featuredProjects } from '../data/site';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const toneMap: Record<NonNullable<Project['tone']>, { shell: string; pill: string; glow: string }> = {
+  blue: {
+    shell: 'from-accent-blue/18 via-white to-accent-blue/8',
+    pill: 'bg-accent-blue/10 text-accent-blue',
+    glow: 'bg-accent-blue/25',
+  },
+  teal: {
+    shell: 'from-accent-teal/16 via-white to-accent-teal/8',
+    pill: 'bg-accent-teal/10 text-accent-teal',
+    glow: 'bg-accent-teal/25',
+  },
+  orange: {
+    shell: 'from-accent-orange/18 via-white to-accent-orange/10',
+    pill: 'bg-accent-orange/12 text-accent-orange',
+    glow: 'bg-accent-orange/25',
+  },
+};
+
 const Projects: React.FC = () => {
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.fromTo('.projects-header',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
+    gsap.fromTo(
+      '.projects-header',
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true } }
     );
 
-    gsap.fromTo('.project-card',
-      { y: 60, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.2, ease: 'power2.out', scrollTrigger: { trigger: '.projects-grid', start: 'top 85%' } }
+    gsap.fromTo(
+      '.project-row',
+      { y: 60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.9, stagger: 0.18, ease: 'power2.out', scrollTrigger: { trigger: '.project-list', start: 'top 85%', once: true } }
     );
   }, { scope: containerRef });
 
-  useEffect(() => {
-    if (activeProject) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [activeProject]);
-
-  const hasValidLiveUrl = (url?: string) => Boolean(url && url !== '#');
-
   return (
-    <section id="projects" aria-labelledby="projects-heading" className="py-24 px-6 relative" ref={containerRef}>
-      <div className="max-w-6xl mx-auto">
-        <div className="projects-header flex items-center gap-4 mb-16 opacity-0 translate-y-10">
-          <h2 id="projects-heading" className="text-3xl md:text-4xl font-display font-bold text-slate-200">
-            Featured Full Stack Projects
+    <section id="projects" aria-labelledby="projects-heading" className="px-6 py-24" ref={containerRef}>
+      <div className="mx-auto max-w-7xl">
+        <div className="projects-header max-w-3xl opacity-0">
+          <span className="section-kicker">Selected Work</span>
+          <h2 id="projects-heading" className="section-heading mt-6">
+            Project case studies designed to feel more like products than portfolio cards.
           </h2>
-          <div className="h-[1px] bg-navy-700/50 flex-grow max-w-xs ml-4"></div>
+          <p className="section-copy mt-6">
+            Each project balances structure, usability, and implementation detail. I focused this redesign on giving the work more presence, clearer storytelling, and a stronger visual identity.
+          </p>
         </div>
 
-        <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredProjects.map((project) => (
-            <article
-              key={project.title}
-              className="project-card opacity-0 glass-card rounded-2xl p-8 flex flex-col h-full hover:-translate-y-3 transition-all duration-300 group hover:shadow-[0_10px_30px_-15px_rgba(100,255,218,0.3)] border border-white/5 hover:border-accent-cyan/30 relative overflow-hidden"
-            >
-              <div className="flex justify-between items-start mb-8 relative z-10">
-                <Folder className="w-12 h-12 text-accent-cyan group-hover:text-white transition-colors duration-300 drop-shadow-[0_0_8px_rgba(100,255,218,0.3)]" />
-                <div className="flex gap-4">
-                  {hasValidLiveUrl(project.liveUrl) && (
-                    <button
-                      type="button"
-                      onClick={() => setActiveProject(project)}
-                      className="text-slate-400 hover:text-accent-cyan transition-colors"
-                      title={`Preview ${project.title}`}
-                      aria-label={`Preview ${project.title}`}
-                    >
-                      <Eye className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    </button>
-                  )}
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-slate-400 hover:text-accent-cyan transition-colors"
-                      title={`View code for ${project.title}`}
-                      aria-label={`View code for ${project.title}`}
-                    >
-                      <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    </a>
-                  )}
-                  {hasValidLiveUrl(project.liveUrl) && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-slate-400 hover:text-accent-cyan transition-colors"
-                      title={`Open live site for ${project.title}`}
-                      aria-label={`Open live site for ${project.title}`}
-                    >
-                      <ExternalLink className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    </a>
-                  )}
+        <div className="project-list mt-16 space-y-10">
+          {featuredProjects.map((project, index) => {
+            const tone = toneMap[project.tone ?? 'blue'];
+            const isReverse = index % 2 === 1;
+
+            return (
+              <article
+                key={project.title}
+                className="project-row grid gap-10 rounded-[2.25rem] border border-ink-950/8 bg-white/78 p-6 opacity-0 shadow-[0_28px_64px_rgba(34,40,50,0.06)] lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:p-8"
+              >
+                <div className={isReverse ? 'lg:order-2' : ''}>
+                  <div className="glass-card rounded-[2rem] p-4">
+                    <div className={`relative min-h-[360px] overflow-hidden rounded-[1.65rem] border border-white/50 bg-gradient-to-br ${tone.shell} p-6`}>
+                      <div className={`absolute right-0 top-0 h-40 w-40 rounded-full blur-3xl ${tone.glow}`}></div>
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2.5 w-2.5 rounded-full bg-ink-950/25"></span>
+                            <span className="h-2.5 w-2.5 rounded-full bg-ink-950/18"></span>
+                            <span className="h-2.5 w-2.5 rounded-full bg-ink-950/10"></span>
+                          </div>
+                          <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${tone.pill}`}>
+                            {project.category}
+                          </span>
+                        </div>
+
+                        <div className="mt-6 grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
+                          <div className="rounded-[1.5rem] bg-ink-950 p-5 text-paper-50 shadow-[0_20px_50px_rgba(23,25,31,0.18)]">
+                            <p className="text-xs uppercase tracking-[0.2em] text-paper-100/72">Project focus</p>
+                            <h3 className="mt-4 font-display text-3xl leading-tight tracking-[-0.04em]">{project.title}</h3>
+                            <p className="mt-4 text-sm leading-6 text-paper-100/80">{project.impact}</p>
+                            <div className="mt-6 space-y-3">
+                              {project.features?.slice(0, 2).map((feature) => (
+                                <div key={feature} className="rounded-2xl border border-white/10 bg-white/7 px-4 py-3 text-sm text-paper-100/86">
+                                  {feature}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="space-y-4">
+                            <div className="rounded-[1.4rem] bg-white/84 p-4 shadow-[0_12px_40px_rgba(34,40,50,0.06)]">
+                              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Role</p>
+                              <p className="mt-3 text-sm font-semibold leading-6 text-ink-900">{project.role}</p>
+                            </div>
+                            <div className="rounded-[1.4rem] bg-white/84 p-4 shadow-[0_12px_40px_rgba(34,40,50,0.06)]">
+                              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Core stack</p>
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                {project.techStack.slice(0, 3).map((tech) => (
+                                  <span key={tech} className="rounded-full bg-paper-100 px-3 py-1 text-xs font-semibold text-ink-800">
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="rounded-[1.4rem] border border-dashed border-ink-950/10 bg-white/56 px-4 py-4">
+                              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Outcome</p>
+                              <p className="mt-3 text-sm leading-6 text-ink-700">{project.description}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <h3 className="text-2xl font-bold text-slate-200 mb-4 group-hover:text-accent-cyan transition-colors relative z-10">
-                {project.title}
-              </h3>
+                <div className={isReverse ? 'lg:order-1' : ''}>
+                  <span className="section-kicker">{project.year}</span>
+                  <h3 className="mt-6 font-display text-4xl leading-tight tracking-[-0.05em] text-ink-950 sm:text-[2.8rem]">
+                    {project.title}
+                  </h3>
+                  <p className="mt-6 text-lg leading-8 text-ink-700">
+                    {project.description}
+                  </p>
 
-              <div className="text-slate-400 text-[15px] leading-relaxed mb-6 flex-grow relative z-10 group-hover:text-slate-300 transition-colors">
-                {project.description}
-                <ul className="mt-4 space-y-2">
-                  {project.features?.map((feature) => (
-                    <li key={feature} className="text-sm text-slate-500 group-hover:text-slate-400 transition-colors flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-accent-cyan/50"></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    <div className="feature-outline rounded-[1.5rem] p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Role</p>
+                      <p className="mt-3 text-sm font-semibold leading-6 text-ink-900">{project.role}</p>
+                    </div>
+                    <div className="feature-outline rounded-[1.5rem] p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Impact</p>
+                      <p className="mt-3 text-sm font-semibold leading-6 text-ink-900">{project.impact}</p>
+                    </div>
+                  </div>
 
-              <div className="flex flex-wrap gap-3 mt-auto pt-6 border-t border-white/5 relative z-10">
-                {project.techStack.map((tech) => (
-                  <span key={tech} className="text-xs font-mono text-accent-cyan bg-accent-cyan/5 px-3 py-1.5 rounded-full border border-accent-cyan/20 group-hover:border-accent-cyan/40 transition-colors">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
+                  <ul className="mt-8 space-y-3">
+                    {project.features?.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3 text-sm leading-7 text-ink-700">
+                        <span className="mt-2 h-2.5 w-2.5 rounded-full bg-accent-blue"></span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-8 chip-row">
+                    {project.techStack.map((tech) => (
+                      <span key={tech} className="chip">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+                    {project.liveUrl && (
+                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="button-primary">
+                        Visit live project
+                        <ArrowUpRight className="h-4 w-4" />
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="button-secondary">
+                        View source
+                        <Github className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
-
-      {activeProject && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="project-preview-title"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-navy-900/90 backdrop-blur-sm animate-in fade-in duration-200"
-          onClick={() => setActiveProject(null)}
-        >
-          <div
-            className="w-full h-full max-w-7xl bg-navy-800 rounded-xl border border-white/10 overflow-hidden flex flex-col shadow-2xl relative animate-in zoom-in-95 duration-200"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex justify-between items-center p-4 border-b border-white/5 bg-navy-900">
-              <div className="flex items-center gap-4">
-                <h3 id="project-preview-title" className="text-lg md:text-xl font-bold text-slate-200">{activeProject.title}</h3>
-                <span className="hidden md:inline-block px-2 py-1 bg-accent-cyan/10 text-accent-cyan text-xs rounded font-mono">Live Preview</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <a
-                  href={activeProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden md:flex items-center gap-2 text-sm text-slate-400 hover:text-accent-cyan transition-colors font-mono"
-                >
-                  Open in new tab
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setActiveProject(null)}
-                  className="p-2 hover:bg-white/5 rounded-full text-slate-400 hover:text-white transition-colors"
-                  aria-label="Close project preview"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-grow bg-white relative">
-              <div className="absolute inset-0 flex items-center justify-center text-navy-900/50">
-                <div className="text-center p-4">
-                  <p className="mb-2">Loading preview...</p>
-                  <p className="text-sm">If the preview does not load, the site may block embedding.</p>
-                </div>
-              </div>
-              <iframe
-                src={activeProject.liveUrl}
-                className="w-full h-full border-0 relative z-10 bg-white"
-                title={`${activeProject.title} Preview`}
-                loading="lazy"
-                sandbox="allow-scripts allow-same-origin allow-forms"
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

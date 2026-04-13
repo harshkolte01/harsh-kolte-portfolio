@@ -1,33 +1,40 @@
 import React, { useRef } from 'react';
-import { Database, Layout, Server, Terminal } from 'lucide-react';
+import { Database, Layout, Server, Workflow } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SkillCategory } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const skillCategories: (SkillCategory & { icon: React.ReactNode })[] = [
+const capabilities = [
   {
-    name: 'Frontend',
-    icon: <Layout className="w-6 h-6 text-accent-cyan" />,
-    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'HTML5/CSS3', 'JavaScript (ES6+)']
+    title: 'Frontend systems',
+    description: 'Responsive layouts, strong visual hierarchy, reusable components, and interfaces that feel sharp on desktop and mobile.',
+    icon: Layout,
+    accent: 'bg-accent-blue/10 text-accent-blue',
+    items: ['React.js', 'Next.js', 'Tailwind CSS', 'UI architecture'],
   },
   {
-    name: 'Backend',
-    icon: <Server className="w-6 h-6 text-accent-purple" />,
-    skills: ['Node.js', 'Express.js', 'REST APIs', 'Authentication (JWT/OAuth)', 'AI Integration']
+    title: 'Backend foundations',
+    description: 'APIs, authentication, product logic, and system structure that keeps complex flows reliable and readable.',
+    icon: Server,
+    accent: 'bg-accent-teal/10 text-accent-teal',
+    items: ['Node.js', 'Express.js', 'REST APIs', 'JWT / OAuth'],
   },
   {
-    name: 'Databases',
-    icon: <Database className="w-6 h-6 text-accent-cyan" />,
-    skills: ['PostgreSQL', 'MongoDB', 'Firebase Realtime DB', 'Vector DB']
+    title: 'Data and AI flows',
+    description: 'Data-heavy web tools, search and filtering, analytics views, and AI integration where product behavior needs intelligence, including applications powered by Claude and OpenAI models.',
+    icon: Database,
+    accent: 'bg-accent-orange/12 text-accent-orange',
+    items: ['MongoDB', 'PostgreSQL', 'Claude / OpenAI APIs', 'AI integration'],
   },
   {
-    name: 'Tools & Others',
-    icon: <Terminal className="w-6 h-6 text-accent-purple" />,
-    skills: ['Git & GitHub', 'Postman', 'VS Code', 'Electron.js']
-  }
+    title: 'Delivery workflow',
+    description: 'Practical execution from Git workflow to iteration speed, debugging discipline, and keeping the UX stable while shipping, including AI-assisted development workflows.',
+    icon: Workflow,
+    accent: 'bg-paper-100 text-ink-900',
+    items: ['Claude Code', 'Codex', 'Git & GitHub', 'Postman'],
+  },
 ];
 
 const Skills: React.FC = () => {
@@ -36,51 +43,46 @@ const Skills: React.FC = () => {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.fromTo('.skills-header',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
-    );
-
-    gsap.fromTo('.skill-card',
-      { y: 50, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: 'back.out(1.7)', scrollTrigger: { trigger: '.skills-grid', start: 'top 85%' } }
+    gsap.fromTo('.skills-block',
+      { y: 45, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true } }
     );
   }, { scope: containerRef });
 
   return (
-    <section id="skills" aria-labelledby="skills-heading" className="py-24 px-6 relative" ref={containerRef}>
-      <div className="max-w-5xl mx-auto">
-        <div className="skills-header flex items-center gap-4 mb-12 opacity-0 translate-y-10">
-          <h2 id="skills-heading" className="text-3xl md:text-4xl font-display font-bold text-slate-200">
-            Core Skills & Technologies
+    <section id="skills" aria-labelledby="skills-heading" className="px-6 py-24" ref={containerRef}>
+      <div className="mx-auto max-w-7xl">
+        <div className="skills-block max-w-3xl opacity-0">
+          <span className="section-kicker">Capabilities</span>
+          <h2 id="skills-heading" className="section-heading mt-6">
+            The stack matters, but the real value is how the pieces work together.
           </h2>
-          <div className="h-[1px] bg-navy-700/50 flex-grow max-w-xs ml-4"></div>
+          <p className="section-copy mt-6">
+            I like building systems where the interface, the product logic, and the data layer reinforce each other. That usually creates cleaner products and a better experience for users.
+          </p>
         </div>
 
-        <div className="skills-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skillCategories.map((category, idx) => (
-            <div
-              key={idx}
-              className="skill-card glass-card p-6 rounded-xl opacity-0 hover:-translate-y-2 group transition-all duration-300 hover:shadow-[0_0_25px_rgba(100,255,218,0.15)] border border-white/5 hover:border-accent-cyan/30 relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-accent-cyan/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-accent-cyan/10 transition-colors duration-500"></div>
-
-              <div className="flex items-center gap-3 mb-6 relative z-10">
-                <div className="p-3 bg-navy-800/80 rounded-lg group-hover:bg-navy-700/80 transition-colors shadow-inner box-border border-white/5 border">
-                  {category.icon}
+        <div className="mt-14 grid gap-6 md:grid-cols-2">
+          {capabilities.map(({ title, description, icon: Icon, accent, items }) => (
+            <article key={title} className="skills-block glass-card rounded-[2rem] p-7 opacity-0">
+              <div className="flex items-start justify-between gap-4">
+                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${accent}`}>
+                  <Icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-200 group-hover:text-accent-cyan transition-colors">{category.name}</h3>
+                <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">
+                  Core area
+                </span>
               </div>
-
-              <ul className="space-y-3 relative z-10">
-                {category.skills.map((skill, sIdx) => (
-                  <li key={sIdx} className="flex items-center gap-2 text-sm font-mono text-slate-400 group-hover:text-slate-300 transition-colors">
-                    <span className="w-1.5 h-1.5 bg-accent-cyan rounded-full group-hover:shadow-[0_0_5px_#64ffda] transition-shadow"></span>
-                    {skill}
-                  </li>
+              <h3 className="mt-6 font-display text-3xl tracking-[-0.04em] text-ink-950">{title}</h3>
+              <p className="mt-4 text-base leading-8 text-ink-700">{description}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {items.map((item) => (
+                  <span key={item} className="rounded-full bg-paper-100 px-4 py-2 text-sm font-semibold text-ink-800">
+                    {item}
+                  </span>
                 ))}
-              </ul>
-            </div>
+              </div>
+            </article>
           ))}
         </div>
       </div>

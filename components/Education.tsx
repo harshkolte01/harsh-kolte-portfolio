@@ -12,55 +12,53 @@ const Education: React.FC = () => {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.fromTo('.edu-header',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 80%' } }
-    );
-
-    gsap.fromTo('.edu-card',
-      { y: 80, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 1.2, delay: 0.2, ease: 'expo.out', scrollTrigger: { trigger: containerRef.current, start: 'top 75%' } }
+    gsap.fromTo('.education-block',
+      { y: 45, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 84%', once: true } }
     );
   }, { scope: containerRef });
 
   return (
-    <section id="education" aria-labelledby="education-heading" className="py-24 px-6 relative" ref={containerRef}>
-      <div className="max-w-3xl mx-auto">
-        <div className="edu-header flex items-center gap-4 mb-16 opacity-0 translate-y-10">
-          <h2 id="education-heading" className="text-3xl md:text-4xl font-display font-bold text-slate-200">
-            Education
+    <section id="education" aria-labelledby="education-heading" className="px-6 py-24" ref={containerRef}>
+      <div className="mx-auto max-w-7xl">
+        <div className="education-block max-w-3xl opacity-0">
+          <span className="section-kicker">Education</span>
+          <h2 id="education-heading" className="section-heading mt-6">
+            Computer engineering foundation with a focus on practical application.
           </h2>
-          <div className="h-[1px] bg-navy-700/50 flex-grow max-w-xs ml-4"></div>
         </div>
 
-        <article className="edu-card opacity-0 glass-card p-8 md:p-10 rounded-2xl relative overflow-hidden group hover:shadow-[0_0_30px_rgba(189,52,254,0.1)] transition-all duration-500">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-accent-purple/10 rounded-full blur-[60px] translate-x-1/3 -translate-y-1/3 group-hover:bg-accent-purple/20 transition-colors duration-700"></div>
-
-          <div className="flex flex-col md:flex-row gap-8 relative z-10">
-            <div className="flex-shrink-0 mt-2">
-              <div className="w-14 h-14 bg-navy-800/80 rounded-full flex items-center justify-center border border-accent-purple/30 shadow-[0_0_15px_rgba(189,52,254,0.2)]">
-                <GraduationCap className="w-6 h-6 text-accent-cyan" />
-              </div>
+        <article className="education-block mt-12 grid gap-8 rounded-[2rem] border border-ink-950/8 bg-white/80 p-8 opacity-0 shadow-[0_28px_64px_rgba(34,40,50,0.06)] lg:grid-cols-[0.34fr_1fr] sm:p-10">
+          <div className="glass-card flex flex-col items-start justify-between rounded-[1.8rem] p-6">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-orange/12 text-accent-orange">
+              <GraduationCap className="h-6 w-6" />
             </div>
+            <div className="mt-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Duration</p>
+              <p className="mt-2 text-sm font-semibold text-ink-900">2022 - 2026</p>
+            </div>
+            <div className="mt-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">CGPA</p>
+              <p className="mt-2 text-sm font-semibold text-ink-900">8.09</p>
+            </div>
+          </div>
 
-            <div className="flex-grow">
-              <h3 className="text-2xl font-bold text-slate-100 mb-2 group-hover:text-accent-cyan transition-colors duration-300">
-                Bachelor of Engineering in Computer Engineering
-              </h3>
-              <p className="text-accent-cyan/90 font-mono text-[15px] mb-6 inline-block px-3 py-1 bg-navy-800/50 rounded flex gap-2 border border-slate-700/30">
-                SAL Institute of Technology and Engineering Research (GTU)
-              </p>
+          <div className="rounded-[1.8rem] bg-white/74 p-6 sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Degree</p>
+            <h3 className="mt-4 font-display text-3xl tracking-[-0.04em] text-ink-950">
+              Bachelor of Engineering in Computer Engineering
+            </h3>
+            <p className="mt-3 text-lg font-semibold text-ink-800">
+              SAL Institute of Technology and Engineering Research (GTU)
+            </p>
+            <p className="mt-5 max-w-3xl text-base leading-8 text-ink-700">
+              The academic base gave me the engineering fundamentals, while projects and internships shaped how I apply those skills in real products and web systems.
+            </p>
 
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-sm text-slate-400 font-mono bg-navy-900/40 p-3 rounded-lg border border-white/5 inline-flex w-full sm:w-auto">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-accent-purple rounded-full shadow-[0_0_5px_#bd34fe]"></span>
-                  <time dateTime="2022">2022</time> - <time dateTime="2026">2026</time>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-accent-purple rounded-full shadow-[0_0_5px_#bd34fe]"></span>
-                  CGPA: 7.83
-                </div>
-              </div>
+            <div className="mt-6 chip-row">
+              <span className="chip">Computer engineering</span>
+              <span className="chip">Systems thinking</span>
+              <span className="chip">Practical development</span>
             </div>
           </div>
         </article>

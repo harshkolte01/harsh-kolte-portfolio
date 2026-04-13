@@ -18,12 +18,12 @@ const SiteShell: React.FC<SiteShellProps> = ({ children, currentPage }) => {
         <div className="ambient-orb orb-2"></div>
         <div className="ambient-orb orb-3"></div>
       </div>
-      <div className="relative z-10 min-h-screen text-slate-400 font-sans selection:bg-accent-cyan/30 selection:text-white flex flex-col">
+      <div className="relative z-10 min-h-screen font-sans text-ink-800 selection:bg-accent-blue/18 selection:text-ink-950 flex flex-col">
         <Navbar currentPage={currentPage} />
-        <main id="main-content" className="max-w-7xl mx-auto w-full flex-grow">
+        <main id="main-content" className="w-full flex-grow pt-4">
           {children}
         </main>
-        <Footer />
+        <Footer currentPage={currentPage} />
       </div>
     </>
   );

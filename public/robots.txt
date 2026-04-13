@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://harshkolte01.github.io/harsh-kolte-portfolio/sitemap.xml
+Sitemap: https://harsh-kolte-portfolio.vercel.app/sitemap.xml

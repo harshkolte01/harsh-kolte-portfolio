@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -6,81 +7,75 @@ import { siteConfig } from '../data/site';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const principles = [
+  'Design systems that feel intentional instead of generic.',
+  'Backend structure that stays maintainable after launch.',
+  'Interfaces that make complex workflows feel straightforward.',
+];
+
 const About: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.fromTo('.about-header',
+    gsap.fromTo('.about-block',
       { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        }
-      }
-    );
-
-    gsap.fromTo('.about-card',
-      { y: 80, opacity: 0, scale: 0.95 },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 1.2,
-        ease: 'expo.out',
-        delay: 0.2,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-        }
-      }
-    );
-
-    gsap.fromTo('.about-text',
-      { y: 20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.about-card',
-          start: 'top 85%',
-        }
-      }
+      { y: 0, opacity: 1, duration: 0.85, stagger: 0.14, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true } }
     );
   }, { scope: containerRef });
 
   return (
-    <section id="about" aria-labelledby="about-heading" className="py-24 px-6 relative" ref={containerRef}>
-      <div className="max-w-3xl mx-auto">
-        <div className="about-header flex items-center gap-4 mb-12 opacity-0 translate-y-10">
-          <h2 id="about-heading" className="text-3xl md:text-4xl font-display font-bold text-slate-200">
-            About Harsh Kolte
+    <section id="about" aria-labelledby="about-heading" className="px-6 py-24" ref={containerRef}>
+      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="about-block opacity-0">
+          <span className="section-kicker">About</span>
+          <h2 id="about-heading" className="section-heading mt-6">
+            Building polished web experiences without losing engineering rigor.
           </h2>
-          <div className="h-[1px] bg-navy-700/50 flex-grow max-w-xs ml-4"></div>
+          <p className="section-copy mt-6">
+            I am {siteConfig.name}, a full stack developer based in {siteConfig.location}. I care about products that feel calm, useful, and sharp on the surface while still being cleanly engineered underneath.
+          </p>
         </div>
 
-        <div className="about-card glass-card p-8 md:p-10 rounded-2xl opacity-0 relative overflow-hidden group hover:shadow-[0_0_30px_rgba(189,52,254,0.1)] transition-all duration-500">
-          <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-accent-purple/10 rounded-full blur-[80px] group-hover:bg-accent-purple/20 transition-colors duration-700"></div>
+        <div className="space-y-6">
+          <div className="about-block glass-card rounded-[2rem] p-8 opacity-0 sm:p-10">
+            <div className="flex items-center justify-between gap-4">
+              <span className="rounded-full bg-paper-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-600">
+                How I work
+              </span>
+              <Sparkles className="h-5 w-5 text-accent-blue" />
+            </div>
+            <p className="mt-6 text-lg leading-8 text-ink-800">
+              My best work usually happens where product clarity, interface quality, and full stack execution need to come together. I enjoy moving from system design to UI detail without dropping quality in either layer, and I also have practical experience working with Claude Code and Codex inside modern AI-assisted development workflows.
+            </p>
+            <div className="mt-8 space-y-4">
+              {principles.map((item) => (
+                <div key={item} className="feature-outline flex items-start gap-4 rounded-[1.4rem] px-5 py-4">
+                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-accent-teal"></span>
+                  <p className="text-sm font-semibold leading-7 text-ink-800">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-          <div className="relative z-10">
-            <p className="about-text text-lg leading-relaxed mb-6 opacity-0 text-slate-300">
-              I am {siteConfig.name}, a full stack developer based in {siteConfig.location}. My work sits at the intersection of strong backend architecture, polished frontend execution, and clear product thinking.
-            </p>
-            <p className="about-text text-lg leading-relaxed mb-6 opacity-0 text-slate-300">
-              I specialize in building with React, Next.js, Node.js, Express, and modern databases. Over the last few years I have focused heavily on <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-purple font-medium">AI integration</span>, authentication flows, data-heavy dashboards, and applications that need both speed and maintainability.
-            </p>
-            <p className="about-text text-lg leading-relaxed opacity-0 text-slate-300">
-              Whether the challenge is designing APIs, shaping analytics experiences, or improving frontend performance, I focus on useful software that solves real user problems and can scale cleanly over time.
-            </p>
+          <div className="about-block grid gap-6 opacity-0 md:grid-cols-2">
+            <div className="glass-card rounded-[1.8rem] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">What I enjoy most</p>
+              <p className="mt-4 text-base leading-8 text-ink-700">
+                Product dashboards, AI features, collaborative tools, and interfaces where information density needs strong visual order. I also enjoy building AI-integrated applications using Claude and OpenAI models where product UX matters as much as the model output.
+              </p>
+            </div>
+            <div className="glass-card rounded-[1.8rem] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Looking for</p>
+              <p className="mt-4 text-base leading-8 text-ink-700">
+                Teams that care about product quality, user experience, and developers who can think across the full stack.
+              </p>
+              <a href="#contact" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent-blue">
+                Let&apos;s connect
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
