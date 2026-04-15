@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        <div className="hero-animate-5 relative">
+        <div className="hero-animate-5 relative xl:pb-28">
           <div className="glass-card rounded-[2rem] p-4 sm:p-5">
             <div className="relative overflow-hidden rounded-[1.7rem] bg-ink-950 p-6 text-paper-50 shadow-[0_40px_100px_rgba(23,25,31,0.18)] sm:p-7">
               <div className="absolute -right-14 top-0 h-44 w-44 rounded-full bg-accent-blue/25 blur-3xl"></div>
@@ -134,7 +134,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-5 hidden rounded-[1.5rem] border border-ink-950/8 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(23,25,31,0.07)] sm:block xl:absolute xl:-bottom-6 xl:left-3 xl:mt-0">
+          <div className="mt-5 hidden rounded-[1.5rem] border border-ink-950/8 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(23,25,31,0.07)] sm:block xl:absolute xl:bottom-0 xl:left-3 xl:right-3 xl:mt-0">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Working style</p>
             <p className="mt-2 text-sm font-semibold text-ink-900">Fast iteration, clean implementation, and details that hold up in production.</p>
           </div>
