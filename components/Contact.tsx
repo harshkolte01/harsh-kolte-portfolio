@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { ArrowUpRight, Github, Instagram, Linkedin, Mail, Send } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -10,166 +10,142 @@ gsap.registerPlugin(ScrollTrigger);
 const contactLinks = [
   { label: 'Email', href: `mailto:${siteConfig.email}`, value: siteConfig.email, icon: Mail },
   { label: 'GitHub', href: siteConfig.githubUrl, value: 'github.com/harshkolte01', icon: Github },
-  { label: 'LinkedIn', href: siteConfig.linkedinUrl, value: 'Connect professionally', icon: Linkedin },
+  { label: 'LinkedIn', href: siteConfig.linkedinUrl, value: 'Professional updates', icon: Linkedin },
   { label: 'Instagram', href: siteConfig.instagramUrl, value: '@harshkolte01', icon: Instagram },
 ];
 
+const intentTags = ['Full stack role', 'AI product build', 'Dashboard UI', 'SaaS MVP', 'Freelance sprint'];
+
 const Contact: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
 
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.fromTo('.contact-block',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.85, stagger: 0.14, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 84%', once: true } }
+    gsap.fromTo(
+      '.contact-reveal',
+      { y: 44, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.82,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: containerRef.current, start: 'top 84%', once: true },
+      }
     );
   }, { scope: containerRef });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus('loading');
-
     const formData = new FormData(event.currentTarget);
-    formData.append('access_key', import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
-
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (!response.ok) {
-        throw new Error('Unable to send the message.');
-      }
-
-      setStatus('success');
-      setMessage('Thanks for reaching out. Your message has been sent successfully and I will reply as soon as possible.');
-      event.currentTarget.reset();
-      setTimeout(() => {
-        setStatus('idle');
-        setMessage('');
-      }, 7000);
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setStatus('error');
-      setMessage('The form could not be sent right now. Please email me directly or connect on LinkedIn.');
-      setTimeout(() => {
-        setStatus('idle');
-        setMessage('');
-      }, 7000);
-    }
+    const name = String(formData.get('name') ?? '');
+    const email = String(formData.get('email') ?? '');
+    const body = String(formData.get('message') ?? '');
+    const subject = encodeURIComponent(`Portfolio inquiry from ${name || 'website visitor'}`);
+    const message = encodeURIComponent(`${body}\n\nFrom: ${name}\nEmail: ${email}`);
+    window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${message}`;
   };
 
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="px-6 py-24" ref={containerRef}>
+    <section id="contact" aria-labelledby="contact-heading" className="section-shell bg-night-950 text-paper-50" ref={containerRef}>
       <div className="mx-auto max-w-7xl">
-        <div className="contact-block max-w-3xl opacity-0">
-          <span className="section-kicker">Contact</span>
-          <h2 id="contact-heading" className="section-heading mt-6">
-            If the product needs both strong engineering and a refined interface, let&apos;s talk.
-          </h2>
-          <p className="section-copy mt-6">
-            I am open to full stack roles, product engineering teams, and select freelance work where the interface quality matters as much as the implementation.
+        <div className="contact-reveal grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-end">
+          <div>
+            <span className="section-label border-white/14 bg-white/8 text-paper-50/74">Contact</span>
+            <h2 id="contact-heading" className="mt-6 font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+              Bring me into the build when UI quality and full stack execution both matter.
+            </h2>
+          </div>
+          <p className="max-w-3xl text-base leading-8 text-paper-50/68 lg:justify-self-end">
+            I am open to full-time roles, product engineering teams, and selective freelance work. A useful first message includes the product goal, current stage, and where the build is stuck.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
-          <div className="contact-block space-y-6 opacity-0">
-            <div className="glass-card rounded-[2rem] p-8 sm:p-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Preferred collaborations</p>
-              <div className="mt-5 chip-row">
-                <span className="chip">Frontend-heavy products</span>
-                <span className="chip">Full stack web apps</span>
-                <span className="chip">AI-enabled features</span>
-                <span className="chip">Dashboards and portals</span>
+        <div className="mt-12 grid gap-6 lg:grid-cols-[0.42fr_0.58fr]">
+          <div className="contact-reveal space-y-6">
+            <div className="rounded-lg border border-white/14 bg-white/7 p-5 sm:p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-paper-50/48">Good reasons to reach out</p>
+              <div className="mt-4 chip-row">
+                {intentTags.map((tag) => (
+                  <span key={tag} className="chip border-white/12 bg-white/8 text-paper-50/78">
+                    {tag}
+                  </span>
+                ))}
               </div>
-              <p className="mt-6 text-base leading-8 text-ink-700">
-                Send a message with the problem you&apos;re solving, the product stage, and what kind of help you need. That usually makes the conversation productive immediately.
-              </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
               {contactLinks.map(({ label, href, value, icon: Icon }) => (
                 <a
                   key={label}
                   href={href}
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="contact-block glass-card rounded-[1.7rem] p-5 opacity-0 transition-transform hover:-translate-y-1"
+                  className="rounded-lg border border-white/14 bg-white/7 p-4 transition hover:-translate-y-1 hover:border-accent-teal/46 hover:bg-white/10"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-paper-100 text-ink-900">
-                      <Icon className="h-5 w-5" />
+                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-paper-50">
+                      <Icon className="h-4 w-4" />
                     </span>
-                    <ArrowUpRight className="h-4 w-4 text-ink-500" />
+                    <ArrowUpRight className="h-4 w-4 text-paper-50/48" />
                   </div>
-                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">{label}</p>
-                  <p className="mt-2 text-sm font-semibold text-ink-900">{value}</p>
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.16em] text-paper-50/48">{label}</p>
+                  <p className="mt-2 break-words text-sm font-extrabold text-paper-50/86">{value}</p>
                 </a>
               ))}
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="contact-block glass-card rounded-[2rem] p-8 opacity-0 sm:p-10">
+          <form onSubmit={handleSubmit} className="contact-reveal rounded-lg border border-white/14 bg-white/7 p-5 shadow-[0_28px_80px_rgba(5,7,13,0.34)] sm:p-7">
             <div className="grid gap-5">
-              <input type="hidden" name="subject" value="New portfolio inquiry" />
               <div>
-                <label htmlFor="name" className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Name</label>
+                <label htmlFor="name" className="mb-2 block text-xs font-bold uppercase tracking-[0.16em] text-paper-50/52">
+                  Name
+                </label>
                 <input
-                  type="text"
                   id="name"
                   name="name"
+                  type="text"
                   autoComplete="name"
                   required
-                  disabled={status === 'loading'}
-                  className="w-full rounded-[1.2rem] border border-ink-950/10 bg-white/86 px-4 py-3.5 text-sm text-ink-900 outline-none transition focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/10 disabled:opacity-50"
+                  className="w-full rounded-lg border border-white/14 bg-night-950/72 px-4 py-3.5 text-sm text-paper-50 outline-none transition placeholder:text-paper-50/32 focus:border-accent-teal focus:ring-4 focus:ring-accent-teal/12"
+                  placeholder="Your name"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Email</label>
+                <label htmlFor="email" className="mb-2 block text-xs font-bold uppercase tracking-[0.16em] text-paper-50/52">
+                  Email
+                </label>
                 <input
-                  type="email"
                   id="email"
                   name="email"
+                  type="email"
                   autoComplete="email"
                   required
-                  disabled={status === 'loading'}
-                  className="w-full rounded-[1.2rem] border border-ink-950/10 bg-white/86 px-4 py-3.5 text-sm text-ink-900 outline-none transition focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/10 disabled:opacity-50"
+                  className="w-full rounded-lg border border-white/14 bg-night-950/72 px-4 py-3.5 text-sm text-paper-50 outline-none transition placeholder:text-paper-50/32 focus:border-accent-teal focus:ring-4 focus:ring-accent-teal/12"
+                  placeholder="you@example.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Message</label>
+                <label htmlFor="message" className="mb-2 block text-xs font-bold uppercase tracking-[0.16em] text-paper-50/52">
+                  Message
+                </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={6}
                   required
-                  disabled={status === 'loading'}
-                  className="w-full resize-none rounded-[1.2rem] border border-ink-950/10 bg-white/86 px-4 py-3.5 text-sm text-ink-900 outline-none transition focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/10 disabled:opacity-50"
-                ></textarea>
+                  className="w-full resize-none rounded-lg border border-white/14 bg-night-950/72 px-4 py-3.5 text-sm text-paper-50 outline-none transition placeholder:text-paper-50/32 focus:border-accent-teal focus:ring-4 focus:ring-accent-teal/12"
+                  placeholder="Tell me about the product, role, or build."
+                />
               </div>
 
-              {message && (
-                <div
-                  aria-live="polite"
-                  className={`rounded-[1.4rem] px-4 py-3 text-sm font-semibold leading-7 ${
-                    status === 'success'
-                      ? 'border border-accent-teal/20 bg-accent-teal/10 text-accent-teal'
-                      : 'border border-accent-orange/20 bg-accent-orange/10 text-accent-orange'
-                  }`}
-                >
-                  {message}
-                </div>
-              )}
-
-              <button type="submit" disabled={status === 'loading'} className="button-primary mt-2 w-full disabled:cursor-not-allowed disabled:opacity-60">
-                <span>{status === 'loading' ? 'Sending...' : 'Send message'}</span>
+              <button type="submit" className="button-primary border-accent-teal bg-accent-teal text-night-950">
                 <Send className="h-4 w-4" />
+                <span>Open email draft</span>
               </button>
             </div>
           </form>

@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://harsh-kolte-portfolio.vercel.app/sitemap.xml
+Host: harsh-kolte-portfolio.vercel.app

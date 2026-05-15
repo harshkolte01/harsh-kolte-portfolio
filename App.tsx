@@ -12,10 +12,10 @@ function App() {
   return (
     <SiteShell currentPage="home">
       <Hero />
-      <About />
+      <Projects />
       <Skills />
       <Experience />
-      <Projects />
+      <About />
       <Education />
       <Contact />
     </SiteShell>

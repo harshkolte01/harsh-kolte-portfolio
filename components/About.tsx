@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Layers3, ShieldCheck, Sparkles } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,9 +8,21 @@ import { siteConfig } from '../data/site';
 gsap.registerPlugin(ScrollTrigger);
 
 const principles = [
-  'Design systems that feel intentional instead of generic.',
-  'Backend structure that stays maintainable after launch.',
-  'Interfaces that make complex workflows feel straightforward.',
+  {
+    title: 'Clear first screen',
+    copy: 'I design the first interaction around what matters: who the product is for, what it does, and what the user should trust next.',
+    icon: Sparkles,
+  },
+  {
+    title: 'Systems over decoration',
+    copy: 'I use reusable components, layout rules, and clean state boundaries so the interface can grow without becoming fragile.',
+    icon: Layers3,
+  },
+  {
+    title: 'Engineering that holds up',
+    copy: 'I care about reliable APIs, readable data contracts, and implementation details that stay manageable after launch.',
+    icon: ShieldCheck,
+  },
 ];
 
 const About: React.FC = () => {
@@ -19,62 +31,64 @@ const About: React.FC = () => {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    gsap.fromTo('.about-block',
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.85, stagger: 0.14, ease: 'power3.out', scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true } }
+    gsap.fromTo(
+      '.about-reveal',
+      { y: 44, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.82,
+        stagger: 0.1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
+      }
     );
   }, { scope: containerRef });
 
   return (
-    <section id="about" aria-labelledby="about-heading" className="px-6 py-24" ref={containerRef}>
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-        <div className="about-block opacity-0">
-          <span className="section-kicker">About</span>
-          <h2 id="about-heading" className="section-heading mt-6">
-            Building polished web experiences without losing engineering rigor.
+    <section id="about" aria-labelledby="about-heading" className="section-shell bg-paper-50/78" ref={containerRef}>
+      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr]">
+        <div className="about-reveal">
+          <span className="section-label">About</span>
+          <h2 id="about-heading" className="section-title mt-6">
+            A full stack developer with a product designer&apos;s eye for flow.
           </h2>
           <p className="section-copy mt-6">
-            I am {siteConfig.name}, a full stack developer based in {siteConfig.location}. I care about products that feel calm, useful, and sharp on the surface while still being cleanly engineered underneath.
+            I am {siteConfig.name}, based in {siteConfig.location}. I enjoy building web products that feel composed on the surface and disciplined underneath: clean UI, strong data handling, practical backend structure, and AI features that fit the workflow instead of feeling pasted on.
           </p>
+          <a href="#contact" className="button-primary mt-8">
+            Start a project conversation
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
 
-        <div className="space-y-6">
-          <div className="about-block glass-card rounded-[2rem] p-8 opacity-0 sm:p-10">
-            <div className="flex items-center justify-between gap-4">
-              <span className="rounded-full bg-paper-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-600">
-                How I work
-              </span>
-              <Sparkles className="h-5 w-5 text-accent-blue" />
-            </div>
-            <p className="mt-6 text-lg leading-8 text-ink-800">
-              My best work usually happens where product clarity, interface quality, and full stack execution need to come together. I enjoy moving from system design to UI detail without dropping quality in either layer, and I also have practical experience working with Claude Code and Codex inside modern AI-assisted development workflows.
-            </p>
-            <div className="mt-8 space-y-4">
-              {principles.map((item) => (
-                <div key={item} className="feature-outline flex items-start gap-4 rounded-[1.4rem] px-5 py-4">
-                  <span className="mt-1 h-2.5 w-2.5 rounded-full bg-accent-teal"></span>
-                  <p className="text-sm font-semibold leading-7 text-ink-800">{item}</p>
+        <div className="grid gap-4">
+          {principles.map(({ title, copy, icon: Icon }) => (
+            <article key={title} className="about-reveal surface-panel rounded-lg p-5 sm:p-6">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-ink-950 text-paper-50">
+                  <Icon className="h-5 w-5" />
                 </div>
-              ))}
-            </div>
-          </div>
+                <div>
+                  <h3 className="font-display text-2xl font-bold text-ink-950">{title}</h3>
+                  <p className="mt-3 text-base leading-8 text-ink-700">{copy}</p>
+                </div>
+              </div>
+            </article>
+          ))}
 
-          <div className="about-block grid gap-6 opacity-0 md:grid-cols-2">
-            <div className="glass-card rounded-[1.8rem] p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">What I enjoy most</p>
-              <p className="mt-4 text-base leading-8 text-ink-700">
-                Product dashboards, AI features, collaborative tools, and interfaces where information density needs strong visual order. I also enjoy building AI-integrated applications using Claude and OpenAI models where product UX matters as much as the model output.
+          <div className="about-reveal grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-ink-950/12 bg-night-950 p-5 text-paper-50">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent-teal">Best fit</p>
+              <p className="mt-4 text-lg font-extrabold leading-7">
+                Product teams that need a developer who can reason through UI, APIs, and user workflows together.
               </p>
             </div>
-            <div className="glass-card rounded-[1.8rem] p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Looking for</p>
-              <p className="mt-4 text-base leading-8 text-ink-700">
-                Teams that care about product quality, user experience, and developers who can think across the full stack.
+            <div className="rounded-lg border border-ink-950/12 bg-white/72 p-5">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-600">Current interest</p>
+              <p className="mt-4 text-lg font-extrabold leading-7 text-ink-950">
+                AI-assisted product experiences, data-heavy tools, and SaaS dashboards with excellent usability.
               </p>
-              <a href="#contact" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent-blue">
-                Let&apos;s connect
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
             </div>
           </div>
         </div>

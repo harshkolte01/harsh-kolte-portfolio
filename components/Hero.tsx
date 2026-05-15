@@ -1,8 +1,21 @@
 import React, { useRef } from 'react';
-import { ArrowRight, BriefcaseBusiness, Sparkles } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Code2, Database, Gauge, MapPin, Sparkles, Terminal, Zap } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { siteConfig } from '../data/site';
+
+const buildStats = [
+  { value: '03+', label: 'shipped product builds' },
+  { value: '2026', label: 'ISRO SAC technical work' },
+  { value: '4x', label: 'UI, API, data, AI coverage' },
+];
+
+const liveSignals = [
+  { label: 'Frontend', value: 'React systems', icon: Code2 },
+  { label: 'Backend', value: 'Node APIs', icon: Terminal },
+  { label: 'Data', value: 'HDF5 + analytics', icon: Database },
+  { label: 'AI', value: 'Claude + OpenAI', icon: BrainCircuit },
+];
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -10,133 +23,118 @@ const Hero: React.FC = () => {
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    tl.fromTo('.hero-animate-1', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.1 })
-      .fromTo('.hero-animate-2', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.4')
-      .fromTo('.hero-animate-3', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.45')
-      .fromTo('.hero-animate-4', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75 }, '-=0.45')
-      .fromTo('.hero-animate-5', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.12 }, '-=0.35');
+    tl.fromTo('.hero-reveal', { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.78, stagger: 0.09, delay: 0.08 })
+      .fromTo('.hero-console', { y: 28, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.8 }, '-=0.48')
+      .fromTo('.signal-bar', { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: 0.65, stagger: 0.08 }, '-=0.36');
   }, { scope: containerRef });
 
   return (
-    <section id="home" aria-labelledby="hero-heading" className="px-6 pb-20 pt-16 sm:pt-20" ref={containerRef}>
-      <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
-        <div className="max-w-3xl">
-          <span className="section-kicker hero-animate-1">{siteConfig.heroEyebrow}</span>
-          <h1 id="hero-heading" className="hero-animate-2 mt-6 font-display text-5xl leading-[0.95] tracking-[-0.06em] text-ink-950 sm:text-6xl lg:text-[5.4rem]">
+    <section id="home" aria-labelledby="hero-heading" className="relative overflow-hidden bg-night-950 px-6 pb-20 pt-14 text-paper-50 sm:pt-20" ref={containerRef}>
+      <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
+        <div className="max-w-4xl">
+          <span className="hero-reveal section-label border-white/16 bg-white/8 text-paper-50/78">
+            {siteConfig.heroEyebrow}
+          </span>
+
+          <h1 id="hero-heading" className="hero-reveal mt-7 font-display text-5xl font-bold leading-none text-white sm:text-7xl lg:text-8xl">
             {siteConfig.name}
           </h1>
-          <p className="hero-animate-3 mt-5 max-w-2xl font-display text-2xl leading-snug tracking-[-0.04em] text-ink-800 sm:text-[2.2rem]">
+
+          <p className="hero-reveal mt-6 max-w-3xl text-2xl font-extrabold leading-tight text-paper-50 sm:text-4xl">
             {siteConfig.heroHeadline}
           </p>
-          <p className="hero-animate-4 mt-6 max-w-2xl text-lg leading-8 text-ink-700">
-            I help teams turn product ideas into modern interfaces, reliable APIs, and thoughtful user experiences. My best work sits where strong design taste meets practical engineering.
+
+          <p className="hero-reveal mt-6 max-w-2xl text-base leading-8 text-paper-50/72 sm:text-lg">
+            I turn rough product ideas into clean interfaces, working data flows, and production-ready full stack systems. The focus is simple: make the product feel clear, fast, and worth trusting.
           </p>
 
-          <div className="hero-animate-5 mt-8 flex flex-col gap-4 sm:flex-row">
-            <a href="#projects" className="button-primary">
-              See selected work
+          <div className="hero-reveal mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#projects" className="button-primary border-accent-teal bg-accent-teal text-night-950 shadow-[0_18px_42px_rgba(19,184,166,0.22)]">
+              View work
               <ArrowRight className="h-4 w-4" />
             </a>
-            <a href="#contact" className="button-secondary">
-              Start a conversation
+            <a href="#contact" className="button-secondary border-white/14 bg-white/8 text-paper-50 hover:bg-white/14 hover:text-white">
+              Build together
+              <Sparkles className="h-4 w-4" />
             </a>
           </div>
 
-          <div className="hero-animate-5 mt-10 chip-row">
+          <div className="hero-reveal mt-8 chip-row">
             {siteConfig.primaryFocus.map((item) => (
-              <span key={item} className="chip">
+              <span key={item} className="chip border-white/12 bg-white/8 text-paper-50/82">
                 {item}
               </span>
             ))}
           </div>
-
-          <div className="hero-animate-5 mt-10 grid gap-4 sm:grid-cols-3">
-            {siteConfig.heroProof.map((item, index) => (
-              <div key={item} className="feature-outline rounded-[1.5rem] bg-white/62 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink-500">Proof 0{index + 1}</p>
-                <p className="mt-2 text-sm font-semibold leading-6 text-ink-900">{item}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
-        <div className="hero-animate-5 relative xl:pb-28">
-          <div className="glass-card rounded-[2rem] p-4 sm:p-5">
-            <div className="relative overflow-hidden rounded-[1.7rem] bg-ink-950 p-6 text-paper-50 shadow-[0_40px_100px_rgba(23,25,31,0.18)] sm:p-7">
-              <div className="absolute -right-14 top-0 h-44 w-44 rounded-full bg-accent-blue/25 blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-accent-teal/25 blur-3xl"></div>
-
-              <div className="relative z-10">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/35"></span>
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/55"></span>
-                    <span className="h-2.5 w-2.5 rounded-full bg-white/75"></span>
-                  </div>
-                  <span className="rounded-full border border-white/12 bg-white/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-paper-100/80">
-                    Interface Canvas
-                  </span>
-                </div>
-
-                <div className="mt-8 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-                  <div className="rounded-[1.5rem] border border-white/10 bg-white/8 p-5">
-                    <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-paper-100/70">
-                      <span>Signature approach</span>
-                      <Sparkles className="h-4 w-4" />
-                    </div>
-                    <h2 className="mt-4 font-display text-2xl leading-tight tracking-[-0.04em]">
-                      Clean systems, polished visuals, and product-minded builds.
-                    </h2>
-                    <div className="mt-6 space-y-3">
-                      <div className="rounded-2xl bg-white/10 p-4">
-                        <p className="text-xs uppercase tracking-[0.2em] text-paper-100/70">Frontend</p>
-                        <p className="mt-2 text-sm text-paper-100/90">Editorial layouts, premium UI, strong responsiveness.</p>
-                      </div>
-                      <div className="rounded-2xl bg-white/10 p-4">
-                        <p className="text-xs uppercase tracking-[0.2em] text-paper-100/70">Backend</p>
-                        <p className="mt-2 text-sm text-paper-100/90">Authentication, APIs, analytics pipelines, and integrations.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="rounded-[1.5rem] border border-white/10 bg-white/92 p-5 text-ink-900">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-500">Currently focused</p>
-                      <p className="mt-3 font-display text-2xl leading-tight tracking-[-0.04em]">AI-driven SaaS and data-heavy dashboards</p>
-                    </div>
-                    <div className="rounded-[1.5rem] border border-white/10 bg-accent-blue/18 p-5">
-                      <div className="flex items-center justify-between text-sm font-semibold text-paper-50">
-                        <span>Open for opportunities</span>
-                        <BriefcaseBusiness className="h-4 w-4" />
-                      </div>
-                      <p className="mt-3 text-sm leading-6 text-paper-50/86">
-                        Full-time roles, product engineering teams, and select freelance builds where UI quality matters.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-[1.35rem] border border-white/10 bg-white/8 p-4">
-                    <p className="text-xs uppercase tracking-[0.18em] text-paper-100/70">Stack</p>
-                    <p className="mt-2 text-sm font-semibold">React | Node.js | TypeScript</p>
-                  </div>
-                  <div className="rounded-[1.35rem] border border-white/10 bg-white/8 p-4">
-                    <p className="text-xs uppercase tracking-[0.18em] text-paper-100/70">Location</p>
-                    <p className="mt-2 text-sm font-semibold">{siteConfig.location}</p>
-                  </div>
-                  <div className="rounded-[1.35rem] border border-white/10 bg-white/8 p-4">
-                    <p className="text-xs uppercase tracking-[0.18em] text-paper-100/70">Best fit</p>
-                    <p className="mt-2 text-sm font-semibold">Product teams that care about UX quality</p>
-                  </div>
-                </div>
-              </div>
+        <div className="hero-console surface-panel-dark rounded-lg p-4 sm:p-5">
+          <div className="flex flex-col gap-4 border-b border-white/12 pb-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-accent-teal">Build desk</p>
+              <h2 className="mt-2 font-display text-3xl font-bold leading-tight text-white">Product system snapshot</h2>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-lg border border-white/12 bg-white/8 px-3 py-2 text-sm font-extrabold text-paper-50/84">
+              <span className="h-2 w-2 rounded-full bg-accent-lime" />
+              Available
             </div>
           </div>
 
-          <div className="mt-5 hidden rounded-[1.5rem] border border-ink-950/8 bg-white/92 px-5 py-4 shadow-[0_18px_40px_rgba(23,25,31,0.07)] sm:block xl:absolute xl:bottom-0 xl:left-3 xl:right-3 xl:mt-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink-500">Working style</p>
-            <p className="mt-2 text-sm font-semibold text-ink-900">Fast iteration, clean implementation, and details that hold up in production.</p>
+          <div className="grid gap-3 border-b border-white/12 py-5 sm:grid-cols-3">
+            {buildStats.map((stat) => (
+              <div key={stat.label} className="rounded-lg border border-white/12 bg-white/7 p-4">
+                <p className="font-display text-3xl font-bold text-white">{stat.value}</p>
+                <p className="mt-2 text-xs font-bold uppercase tracking-[0.14em] text-paper-50/56">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid gap-3 py-5 sm:grid-cols-2">
+            {liveSignals.map(({ label, value, icon: Icon }, index) => (
+              <div key={label} className="rounded-lg border border-white/12 bg-white/7 p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-paper-50/52">{label}</p>
+                    <p className="mt-2 text-sm font-extrabold text-white">{value}</p>
+                  </div>
+                  <Icon className="h-5 w-5 text-accent-teal" />
+                </div>
+                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className={`signal-bar h-full rounded-full ${
+                      index === 0 ? 'w-[92%] bg-accent-teal' : index === 1 ? 'w-[84%] bg-accent-blue' : index === 2 ? 'w-[76%] bg-accent-orange' : 'w-[88%] bg-accent-lime'
+                    }`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid gap-3 border-t border-white/12 pt-5 md:grid-cols-[0.95fr_1.05fr]">
+            <div className="rounded-lg border border-white/12 bg-white/7 p-4">
+              <div className="flex items-center gap-2 text-sm font-extrabold text-white">
+                <MapPin className="h-4 w-4 text-accent-orange" />
+                {siteConfig.location}
+              </div>
+              <p className="mt-3 text-sm leading-6 text-paper-50/68">
+                Open to full-time product teams and selective freelance builds where design quality matters.
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-white/12 bg-white/7 p-4">
+              <div className="flex items-center gap-2 text-sm font-extrabold text-white">
+                <Gauge className="h-4 w-4 text-accent-teal" />
+                Operating proof
+              </div>
+              <div className="mt-3 space-y-2">
+                {siteConfig.heroProof.map((item) => (
+                  <p key={item} className="flex items-start gap-2 text-sm leading-6 text-paper-50/68">
+                    <Zap className="mt-1 h-3.5 w-3.5 shrink-0 text-accent-lime" />
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

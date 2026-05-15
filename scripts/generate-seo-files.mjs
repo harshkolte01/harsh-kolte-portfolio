@@ -62,6 +62,12 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>${siteUrl}/resume_harshkolte.pdf</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
 `;
 
@@ -69,6 +75,7 @@ const robots = `User-agent: *
 Allow: /
 
 Sitemap: ${siteUrl}/sitemap.xml
+Host: ${new URL(siteUrl).host}
 `;
 
 fs.mkdirSync(publicDir, { recursive: true });
