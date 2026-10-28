@@ -1,128 +1,153 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, FileText, Menu, MessageCircle, X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { siteConfig } from '../data/site';
+import { gsap, prefersReducedMotion, setScrollLocked, useLocalTime } from '../lib/motion';
 
 interface NavbarProps {
   currentPage: 'home' | 'resume';
 }
 
-const navLinks = [
-  { name: 'Work', href: '#projects' },
-  { name: 'Stack', href: '#skills' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'About', href: '#about' },
-  { name: 'Contact', href: '#contact' },
-];
-
 const Navbar: React.FC<NavbarProps> = ({ currentPage }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const isHomePage = currentPage === 'home';
-  const homeHref = isHomePage ? '#home' : '../';
-  const resumeHref = isHomePage ? 'resume/' : '../resume_harshkolte.pdf';
-  const resumeLabel = isHomePage ? 'Resume' : 'Download PDF';
+  const isHome = currentPage === 'home';
+  const base = isHome ? '' : siteConfig.resumeHomeHref;
+  const links = [
+    { label: 'Work', href: `${base}#work` },
+    { label: 'Services', href: `${base}#services` },
+    { label: 'About', href: `${base}#about` },
+    { label: 'Résumé', href: isHome ? siteConfig.homeResumeHref : './', current: !isHome },
+  ];
+
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const time = useLocalTime(siteConfig.timeZone);
+
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      setHidden(y > 240 && y > last);
+      last = y;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    setScrollLocked(open);
+    const menu = menuRef.current;
+    if (!menu) return;
+
+    if (open && !prefersReducedMotion()) {
+      gsap.fromTo(
+        menu.querySelectorAll('.menu-item'),
+        { yPercent: 100 },
+        { yPercent: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05, delay: 0.1 }
+      );
+    }
+
+    const onKey = (event: KeyboardEvent) => event.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
 
   return (
-    <nav aria-label="Primary" className="sticky top-0 z-50 border-b border-white/10 bg-night-950/96 px-4 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 py-3">
-        <a href={homeHref} className="flex min-w-0 items-center gap-3" aria-label="Harsh Kolte home">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-white/14 bg-white/8 font-display text-sm font-bold text-paper-50">
-            {siteConfig.initials}
-          </span>
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-extrabold text-paper-50">{siteConfig.name}</span>
-            <span className="hidden truncate text-xs font-semibold text-paper-50/58 sm:block">{siteConfig.jobTitle}</span>
-          </span>
-        </a>
-
-        <div className="hidden items-center gap-2 lg:flex">
-          {isHomePage ? (
-            <ol className="mr-2 flex items-center gap-1 text-sm font-bold text-paper-50/66">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="rounded-md px-3 py-2 transition-colors hover:bg-white/8 hover:text-white">
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <a href="../" className="rounded-md px-3 py-2 text-sm font-bold text-paper-50/66 transition-colors hover:bg-white/8 hover:text-white">
-              Back to portfolio
-            </a>
-          )}
-
-          <a
-            href={resumeHref}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/14 bg-white/8 px-4 py-2.5 text-sm font-extrabold text-paper-50 transition hover:border-accent-teal/50 hover:bg-white/12"
-            {...(!isHomePage ? { download: 'Harsh_Kolte_Resume.pdf' } : {})}
-          >
-            <FileText className="h-4 w-4" />
-            {resumeLabel}
+    <>
+      <header
+        className={`no-print fixed inset-x-0 top-0 z-50 transition-transform duration-700 ease-[var(--ease-out-expo)] ${
+          hidden && !open ? '-translate-y-full' : 'translate-y-0'
+        }`}
+      >
+        <div
+          className={`absolute inset-0 -z-10 border-b transition-colors duration-500 ${
+            scrolled || open ? 'border-line bg-bg/80 backdrop-blur-xl' : 'border-transparent'
+          }`}
+        />
+        <nav className="container-x flex h-16 items-center justify-between gap-6 md:h-[72px]" aria-label="Primary">
+          <a href={isHome ? '#top' : siteConfig.resumeHomeHref} className="group flex items-center gap-3" aria-label="Harsh Kolte — home">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-fg font-mono text-[12px] font-semibold text-bg transition-colors duration-300 group-hover:bg-accent">
+              {siteConfig.initials}
+            </span>
+            <span className="hidden text-[15px] font-medium tracking-tight sm:block">{siteConfig.name}</span>
           </a>
-          {isHomePage && (
-            <a href="#contact" className="inline-flex items-center justify-center gap-2 rounded-lg border border-accent-teal bg-accent-teal px-4 py-2.5 text-sm font-extrabold text-night-950 transition hover:bg-accent-lime hover:border-accent-lime">
-              <MessageCircle className="h-4 w-4" />
-              Talk
+
+          <ul className="hidden items-center gap-1 md:flex">
+            {links.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  aria-current={link.current ? 'page' : undefined}
+                  className={`rounded-full px-4 py-2 text-[14px] transition-colors duration-300 hover:text-fg ${
+                    link.current ? 'text-fg' : 'text-muted'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-5">
+            <span className="hidden items-center gap-2.5 font-mono text-[12px] text-muted lg:flex">
+              <span className="status-dot" aria-hidden="true" />
+              Available · {time} IST
+            </span>
+            <a href={`${base}#contact`} className="btn btn-primary hidden h-10 px-5 text-[14px] md:inline-flex">
+              Let&apos;s talk
             </a>
-          )}
-        </div>
-
-        <button
-          type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/14 bg-white/8 text-paper-50 lg:hidden"
-          onClick={() => setIsOpen((open) => !open)}
-          aria-expanded={isOpen}
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        >
-          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="mx-auto grid max-w-7xl gap-2 border-t border-white/10 py-3 lg:hidden">
-          {isHomePage ? (
-            navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="flex items-center justify-between rounded-lg bg-white/8 px-3 py-3 text-sm font-extrabold text-paper-50"
-                onClick={() => setIsOpen(false)}
-              >
-                <span>{link.name}</span>
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-            ))
-          ) : (
-            <a
-              href="../"
-              className="flex items-center justify-between rounded-lg bg-white/8 px-3 py-3 text-sm font-extrabold text-paper-50"
-              onClick={() => setIsOpen(false)}
+            <button
+              type="button"
+              className="relative grid h-10 w-10 place-items-center rounded-full border border-line-strong md:hidden"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((value) => !value)}
             >
-              <span>Back to portfolio</span>
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          )}
-
-          <div className="grid gap-2 sm:grid-cols-2">
-            <a
-              href={resumeHref}
-              className="button-secondary border-white/14 bg-white/8 text-sm text-paper-50 hover:bg-white/12 hover:text-white"
-              onClick={() => setIsOpen(false)}
-              {...(!isHomePage ? { download: 'Harsh_Kolte_Resume.pdf' } : {})}
-            >
-              <FileText className="h-4 w-4" />
-              {resumeLabel}
-            </a>
-            {isHomePage && (
-              <a href="#contact" className="button-primary border-accent-teal bg-accent-teal text-sm text-night-950" onClick={() => setIsOpen(false)}>
-                <MessageCircle className="h-4 w-4" />
-                Talk
-              </a>
-            )}
+              <span className={`absolute h-px w-4 bg-fg transition-transform duration-500 ease-[var(--ease-out-expo)] ${open ? 'rotate-45' : '-translate-y-[3px]'}`} />
+              <span className={`absolute h-px w-4 bg-fg transition-transform duration-500 ease-[var(--ease-out-expo)] ${open ? '-rotate-45' : 'translate-y-[3px]'}`} />
+            </button>
           </div>
+        </nav>
+      </header>
+
+      <div
+        id="mobile-menu"
+        ref={menuRef}
+        className={`fixed inset-0 z-40 flex flex-col bg-bg px-5 pb-8 pt-24 transition-[opacity,visibility] duration-500 md:hidden ${
+          open ? 'visible opacity-100' : 'invisible opacity-0'
+        }`}
+        aria-hidden={!open}
+      >
+        <ul className="flex flex-col">
+          {[...links, { label: 'Contact', href: `${base}#contact` }].map((link, index) => (
+            <li key={link.label} className="overflow-hidden border-b border-line">
+              <a
+                href={link.href}
+                tabIndex={open ? 0 : -1}
+                onClick={() => setOpen(false)}
+                className="menu-item flex items-baseline justify-between py-4 text-[2.5rem] font-medium tracking-[-0.04em]"
+              >
+                {link.label}
+                <span className="font-mono text-[12px] text-faint">0{index + 1}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-auto flex flex-col gap-4">
+          <span className="flex items-center gap-2.5 font-mono text-[12px] text-muted">
+            <span className="status-dot" aria-hidden="true" />
+            {siteConfig.availability}
+          </span>
+          <a href={`mailto:${siteConfig.email}`} tabIndex={open ? 0 : -1} className="inline-flex items-center gap-2 text-lg">
+            {siteConfig.email}
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
-      )}
-    </nav>
+      </div>
+    </>
   );
 };
 

@@ -1,187 +1,157 @@
-import React, { useRef } from 'react';
-import { ArrowUpRight, Briefcase, Code2, Download, GraduationCap, Mail, MapPin, Share2 } from 'lucide-react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { featuredProjects, siteConfig } from '../data/site';
+import React, { useRef, useState } from 'react';
+import { ArrowUpRight, Check, Download, Link2 } from 'lucide-react';
+import { featuredProjects, siteConfig, stackGroups, timeline } from '../data/site';
+import { SplitWords, gsap, prefersReducedMotion, useGSAP } from '../lib/motion';
+
+const Block: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <section className="resume-reveal grid gap-6 border-t border-line py-10 md:grid-cols-[200px_1fr] md:gap-10 print:border-black/20 print:py-5">
+    <h2 className="eyebrow pt-1 print:text-black">{title}</h2>
+    <div>{children}</div>
+  </section>
+);
 
 const ResumePage: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const scope = useRef<HTMLElement>(null);
+  const [shared, setShared] = useState(false);
 
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
-    gsap.fromTo(
-      '.resume-reveal',
-      { y: 34, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.72, stagger: 0.08, ease: 'power3.out' }
-    );
-  }, { scope: containerRef });
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      gsap.from('.split-word', { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.05 });
+      gsap.from('.resume-reveal', { y: 28, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.07, delay: 0.25 });
+    },
+    { scope }
+  );
 
   const handleShare = async () => {
-    const resumeUrl = window.location.href;
+    const url = window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: siteConfig.resumeTitle,
-          text: 'Check out Harsh Kolte resume.',
-          url: resumeUrl,
-        });
-      } catch (error) {
-        console.error('Error sharing:', error);
+        await navigator.share({ title: `${siteConfig.name} — Résumé`, url });
+      } catch {
+        /* dismissed */
       }
-    } else {
-      await navigator.clipboard.writeText(resumeUrl);
-      alert('Resume link copied to clipboard.');
+      return;
     }
+    await navigator.clipboard.writeText(url);
+    setShared(true);
+    window.setTimeout(() => setShared(false), 1800);
   };
 
   return (
-    <article className="section-shell pt-12 sm:pt-16" ref={containerRef}>
-      <div className="mx-auto max-w-6xl">
-        <header className="resume-reveal rounded-lg border border-white/14 bg-night-950 p-5 text-paper-50 shadow-[0_28px_80px_rgba(5,7,13,0.26)] sm:p-7">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-            <div>
-              <span className="section-label border-white/14 bg-white/8 text-paper-50/74">Resume</span>
-              <h1 className="mt-6 font-display text-5xl font-bold leading-none text-white sm:text-6xl">
-                {siteConfig.name}
-              </h1>
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-paper-50/68">
-                Full stack developer focused on React product interfaces, Node.js APIs, data-heavy workflows, and AI-enabled product experiences.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm font-bold text-paper-50/76">
-                <span className="inline-flex items-center gap-2 rounded-lg border border-white/12 bg-white/7 px-3 py-2">
-                  <MapPin className="h-4 w-4 text-accent-orange" />
-                  {siteConfig.location}
-                </span>
-                <a href={`mailto:${siteConfig.email}`} className="inline-flex items-center gap-2 rounded-lg border border-white/12 bg-white/7 px-3 py-2 transition hover:border-accent-teal/46 hover:text-white">
-                  <Mail className="h-4 w-4 text-accent-teal" />
-                  {siteConfig.email}
-                </a>
-              </div>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              <button type="button" onClick={handleShare} className="button-secondary border-white/14 bg-white/8 text-paper-50 hover:bg-white/14 hover:text-white">
-                <Share2 className="h-4 w-4" />
-                Share
-              </button>
-              <a href={siteConfig.resumePdfHref} download="Harsh_Kolte_Resume.pdf" className="button-primary border-accent-teal bg-accent-teal text-night-950">
-                <Download className="h-4 w-4" />
-                Download PDF
+    <article ref={scope} className="container-x pb-24 pt-32 md:pt-40 print:pt-0">
+      <header className="flex flex-col gap-10 pb-12 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="resume-reveal eyebrow">Résumé · updated 2026</p>
+          <h1 className="display mt-6 text-[clamp(3rem,8vw,7rem)]">
+            <SplitWords text={siteConfig.name} />
+          </h1>
+          <p className="resume-reveal lede mt-6 max-w-[52ch]">
+            Full-stack engineer building AI agents, desktop apps and web products. Former trainee at Space Applications Centre, ISRO.
+          </p>
+          <ul className="resume-reveal mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[12.5px] text-muted">
+            <li>{siteConfig.location}</li>
+            <li>
+              <a className="link-underline hover:text-fg" href={`mailto:${siteConfig.email}`}>
+                {siteConfig.email}
               </a>
-            </div>
-          </div>
-        </header>
-
-        <div className="mt-8 grid gap-6 xl:grid-cols-[0.38fr_0.62fr]">
-          <aside className="space-y-6">
-            <section className="resume-reveal rounded-lg border border-ink-950/12 bg-white/72 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.07)]">
-              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-ink-500">Profile</p>
-              <p className="mt-4 text-sm leading-7 text-ink-700">
-                Product-minded full stack developer comfortable moving from interface structure to backend logic while keeping usability clear.
-              </p>
-            </section>
-
-            <section className="resume-reveal rounded-lg border border-ink-950/12 bg-white/72 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.07)]">
-              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-ink-500">Core stack</p>
-              <div className="mt-4 chip-row">
-                {siteConfig.primaryFocus.map((item) => (
-                  <span key={item} className="chip">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </section>
-
-            <section className="resume-reveal rounded-lg border border-ink-950/12 bg-white/72 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.07)]">
-              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-ink-500">Education</p>
-              <h2 className="mt-4 font-display text-2xl font-bold leading-tight text-ink-950">B.E. in Computer Engineering</h2>
-              <p className="mt-2 text-sm font-bold text-ink-800">SAL Institute of Technology and Engineering Research (GTU)</p>
-              <p className="mt-3 text-sm leading-7 text-ink-700">2022 - 2026 | CGPA 8.09</p>
-            </section>
-          </aside>
-
-          <div className="space-y-6">
-            <section className="resume-reveal rounded-lg border border-ink-950/12 bg-white/72 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.07)] sm:p-6">
-              <h2 className="flex items-center gap-3 font-display text-3xl font-bold text-ink-950">
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-ink-950 text-paper-50">
-                  <Briefcase className="h-5 w-5" />
-                </span>
-                Experience
-              </h2>
-              <div className="mt-6 rounded-lg border border-ink-950/12 bg-paper-50/68 p-5">
-                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                  <div>
-                    <h3 className="text-xl font-extrabold text-ink-950">Space Applications Centre, ISRO</h3>
-                    <p className="mt-1 text-sm font-extrabold text-accent-teal">Trainee</p>
-                    <p className="mt-2 text-sm text-ink-600">Payload Checkout Software and Vision Control Department</p>
-                  </div>
-                  <p className="text-sm font-extrabold text-ink-600">Jan 2026 - Mar 2026</p>
-                </div>
-                <div className="mt-5 grid gap-3">
-                  <p className="rounded-lg border border-ink-950/10 bg-white/70 px-4 py-3 text-sm leading-7 text-ink-700">
-                    Built a web-based HDF Viewer for data analytics and integrated it into the SAC web portal.
-                  </p>
-                  <p className="rounded-lg border border-ink-950/10 bg-white/70 px-4 py-3 text-sm leading-7 text-ink-700">
-                    Engineered browser-side parsing, analysis, and visualization workflows for large HDF5 data files.
-                  </p>
-                </div>
-                <a href={siteConfig.hdfViewerUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-accent-blue">
-                  View HDF Viewer
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-              </div>
-            </section>
-
-            <section className="resume-reveal rounded-lg border border-ink-950/12 bg-white/72 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.07)] sm:p-6">
-              <h2 className="flex items-center gap-3 font-display text-3xl font-bold text-ink-950">
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent-teal text-night-950">
-                  <Code2 className="h-5 w-5" />
-                </span>
-                Selected Projects
-              </h2>
-              <div className="mt-6 grid gap-4">
-                {featuredProjects.map((project) => (
-                  <article key={project.title} className="rounded-lg border border-ink-950/12 bg-paper-50/68 p-5">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                      <div>
-                        <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-ink-500">{project.category}</p>
-                        <h3 className="mt-2 font-display text-2xl font-bold text-ink-950">{project.title}</h3>
-                        <p className="mt-3 text-sm leading-7 text-ink-700">{project.description}</p>
-                      </div>
-                      {project.liveUrl && (
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-extrabold text-accent-blue">
-                          Open
-                          <ArrowUpRight className="h-4 w-4" />
-                        </a>
-                      )}
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {project.techStack.map((tech) => (
-                        <span key={tech} className="rounded-lg bg-white/80 px-3 py-1.5 text-xs font-extrabold text-ink-800">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section className="resume-reveal rounded-lg border border-ink-950/12 bg-white/72 p-5 shadow-[0_18px_50px_rgba(17,24,39,0.07)] sm:p-6">
-              <h2 className="flex items-center gap-3 font-display text-3xl font-bold text-ink-950">
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent-orange text-night-950">
-                  <GraduationCap className="h-5 w-5" />
-                </span>
-                Summary
-              </h2>
-              <p className="mt-5 text-base leading-8 text-ink-700">
-                I enjoy building products where usability, performance, and technical clarity all matter. My strongest fit is modern web application development with React, Node.js, data workflows, and AI-enabled product thinking.
-              </p>
-            </section>
-          </div>
+            </li>
+            <li>
+              <a className="link-underline hover:text-fg" href={siteConfig.githubUrl}>
+                github.com/{siteConfig.githubUser}
+              </a>
+            </li>
+          </ul>
         </div>
-      </div>
+        <div className="resume-reveal no-print flex shrink-0 gap-2.5">
+          <button type="button" onClick={handleShare} className="btn btn-ghost h-11 px-5 text-[14px]">
+            {shared ? <Check className="h-4 w-4 text-ok" /> : <Link2 className="h-4 w-4" />}
+            {shared ? 'Link copied' : 'Share'}
+          </button>
+          <a href={siteConfig.resumePdfHref} download="Harsh_Kolte_Resume.pdf" className="btn btn-primary h-11 px-5 text-[14px]">
+            <Download className="h-4 w-4" />
+            Download PDF
+          </a>
+        </div>
+      </header>
+
+      <Block title="Summary">
+        <p className="max-w-[62ch] text-[17px] leading-relaxed text-fg/90">
+          Engineer who takes products end to end — data model, API, interface, packaging and deployment. Recent work spans an AI coding
+          agent with sandboxed execution and human approvals, cross-platform desktop apps with auto-updates, and browser-based tooling for
+          satellite payload data. Available for freelance and contract work.
+        </p>
+      </Block>
+
+      <Block title="Experience">
+        <ol className="space-y-8">
+          {timeline
+            .filter((entry) => !entry.title.startsWith('B.E.'))
+            .map((entry) => (
+              <li key={entry.title + entry.period}>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="text-[19px] font-medium tracking-[-0.02em]">
+                    {entry.title} <span className="text-muted">· {entry.org}</span>
+                  </h3>
+                  <span className="font-mono text-[12px] text-faint">{entry.period}</span>
+                </div>
+                <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-muted">{entry.copy}</p>
+              </li>
+            ))}
+        </ol>
+      </Block>
+
+      <Block title="Selected projects">
+        <ol className="space-y-8">
+          {featuredProjects.map((project) => (
+            <li key={project.slug}>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3 className="text-[19px] font-medium tracking-[-0.02em]">
+                  {project.title} <span className="text-muted">· {project.kind}</span>
+                </h3>
+                <span className="font-mono text-[12px] text-faint">{project.year}</span>
+              </div>
+              <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-muted">{project.description}</p>
+              <p className="mt-2 font-mono text-[12px] text-faint">{project.stack.join(' · ')}</p>
+              <div className="mt-2 flex gap-5 text-[13.5px]">
+                {project.liveUrl ? (
+                  <a href={project.liveUrl} className="link-underline inline-flex items-center gap-1 text-fg">
+                    {project.liveLabel} <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
+                ) : null}
+                {project.repoUrl ? (
+                  <a href={project.repoUrl} className="link-underline inline-flex items-center gap-1 text-muted hover:text-fg">
+                    Source <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
+                ) : null}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </Block>
+
+      <Block title="Skills">
+        <dl className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
+          {stackGroups.map((group) => (
+            <div key={group.label}>
+              <dt className="font-mono text-[11.5px] uppercase text-faint">{group.label}</dt>
+              <dd className="mt-1.5 text-[15px] text-fg/90">{group.items.join(', ')}</dd>
+            </div>
+          ))}
+        </dl>
+      </Block>
+
+      <Block title="Education">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+          <h3 className="text-[19px] font-medium tracking-[-0.02em]">B.E. Computer Engineering</h3>
+          <span className="font-mono text-[12px] text-faint">2022 — 2026</span>
+        </div>
+        <p className="mt-2 text-[15px] text-muted">SAL Institute of Technology &amp; Engineering Research, Ahmedabad (GTU) · CGPA 8.09</p>
+      </Block>
+
+      <Block title="Languages">
+        <p className="text-[15px] text-fg/90">English, Hindi, Gujarati, Marathi</p>
+      </Block>
     </article>
   );
 };

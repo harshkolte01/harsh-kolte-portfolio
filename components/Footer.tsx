@@ -1,81 +1,110 @@
-import React from 'react';
-import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import React, { useRef } from 'react';
+import { ArrowUp } from 'lucide-react';
 import { siteConfig } from '../data/site';
+import { gsap, prefersReducedMotion, scrollToTarget, useGSAP } from '../lib/motion';
 
 interface FooterProps {
   currentPage: 'home' | 'resume';
 }
 
 const Footer: React.FC<FooterProps> = ({ currentPage }) => {
-  const base = currentPage === 'home' ? '' : '../';
+  const scope = useRef<HTMLElement>(null);
+  const base = currentPage === 'home' ? '' : siteConfig.resumeHomeHref;
 
-  const footerLinks = [
-    { label: 'Work', href: `${base}#projects` },
-    { label: 'Stack', href: `${base}#skills` },
-    { label: 'Experience', href: `${base}#experience` },
-    { label: 'Contact', href: `${base}#contact` },
-  ];
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      gsap.from('.footer-mark span', {
+        yPercent: 100,
+        ease: 'expo.out',
+        duration: 1.4,
+        stagger: 0.04,
+        scrollTrigger: { trigger: '.footer-mark', start: 'top 95%', once: true },
+      });
+    },
+    { scope }
+  );
 
-  const socialLinks = [
-    { label: 'Email', href: `mailto:${siteConfig.email}`, icon: Mail },
-    { label: 'GitHub', href: siteConfig.githubUrl, icon: Github },
-    { label: 'LinkedIn', href: siteConfig.linkedinUrl, icon: Linkedin },
-    { label: 'Instagram', href: siteConfig.instagramUrl, icon: Instagram },
+  const columns = [
+    {
+      title: 'Site',
+      links: [
+        { label: 'Work', href: `${base}#work` },
+        { label: 'Services', href: `${base}#services` },
+        { label: 'About', href: `${base}#about` },
+        { label: 'Contact', href: `${base}#contact` },
+      ],
+    },
+    {
+      title: 'Elsewhere',
+      links: [
+        { label: 'GitHub', href: siteConfig.githubUrl },
+        { label: 'LinkedIn', href: siteConfig.linkedinUrl },
+        { label: 'Instagram', href: siteConfig.instagramUrl },
+        {
+          label: 'Résumé (PDF)',
+          href: currentPage === 'home' ? siteConfig.homeResumePdfHref : siteConfig.resumePdfHref,
+        },
+      ],
+    },
   ];
 
   return (
-    <footer className="bg-night-950 px-6 pb-8 text-paper-50">
-      <div className="mx-auto max-w-7xl border-t border-white/12 pt-8">
-        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr_1fr]">
+    <footer ref={scope} className="no-print relative overflow-hidden border-t border-line pt-16">
+      <div className="container-x">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_auto]">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent-teal">Harsh Kolte</p>
-            <h2 className="mt-4 max-w-xl font-display text-3xl font-bold leading-tight text-white">
-              Full stack developer for polished AI, SaaS, dashboard, and data-heavy web products.
-            </h2>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-paper-50/62">
-              Built around React interfaces, Node.js backends, practical product thinking, and strong UX detail.
+            <p className="max-w-[28ch] text-[19px] leading-snug tracking-[-0.02em]">
+              Full-stack engineer in {siteConfig.location}, building AI agents, desktop apps and web products.
             </p>
+            <a href={`mailto:${siteConfig.email}`} className="link-underline mt-5 inline-block text-[15px] text-muted hover:text-fg">
+              {siteConfig.email}
+            </a>
           </div>
-
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-paper-50/46">Navigation</p>
-            <div className="mt-4 grid gap-2">
-              {footerLinks.map((link) => (
-                <a key={link.label} href={link.href} className="flex items-center gap-2 rounded-lg px-0 py-2 text-sm font-extrabold text-paper-50/72 transition hover:text-white">
-                  {link.label}
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-paper-50/46">Reach out</p>
-            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-              {socialLinks.map(({ label, href, icon: Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="flex items-center justify-between rounded-lg border border-white/12 bg-white/7 px-3 py-3 text-sm font-extrabold text-paper-50/76 transition hover:border-accent-teal/46 hover:bg-white/10 hover:text-white"
-                >
-                  <span className="flex items-center gap-3">
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </span>
-                  <ArrowUpRight className="h-4 w-4 text-paper-50/42" />
-                </a>
-              ))}
-            </div>
-          </div>
+          {columns.map((column) => (
+            <nav key={column.title} aria-label={column.title}>
+              <p className="eyebrow">{column.title}</p>
+              <ul className="mt-4 space-y-2.5">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="link-underline text-[15px] text-muted transition-colors hover:text-fg"
+                      {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+          <button
+            type="button"
+            onClick={() => scrollToTarget(0)}
+            className="grid h-12 w-12 place-items-center self-start rounded-full border border-line-strong text-muted transition-colors hover:border-fg hover:bg-fg hover:text-bg"
+            aria-label="Back to top"
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-white/12 pt-5 text-sm text-paper-50/52 sm:flex-row sm:items-center sm:justify-between">
-          <p>Designed and built by {siteConfig.name}.</p>
-          <p>{new Date().getFullYear()} | {siteConfig.location}</p>
+        <div className="mt-16 flex flex-wrap justify-between gap-4 border-t border-line py-6 font-mono text-[12px] text-faint">
+          <span>© {new Date().getFullYear()} {siteConfig.name}</span>
+          <span>Designed &amp; built by hand · React, GSAP, Lenis</span>
         </div>
       </div>
+
+      <p
+        className="footer-mark pointer-events-none flex select-none justify-center overflow-hidden whitespace-nowrap pb-[1vw] text-[18vw] font-semibold leading-[0.78] tracking-[-0.07em] text-surface-2"
+        aria-hidden="true"
+      >
+        {Array.from('Harsh Kolte').map((char, i) => (
+          <span key={i} className="inline-block">
+            {char === ' ' ? ' ' : char}
+          </span>
+        ))}
+      </p>
     </footer>
   );
 };

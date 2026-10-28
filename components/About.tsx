@@ -1,95 +1,89 @@
 import React, { useRef } from 'react';
-import { ArrowUpRight, Layers3, ShieldCheck, Sparkles } from 'lucide-react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { siteConfig } from '../data/site';
-
-gsap.registerPlugin(ScrollTrigger);
-
-const principles = [
-  {
-    title: 'Clear first screen',
-    copy: 'I design the first interaction around what matters: who the product is for, what it does, and what the user should trust next.',
-    icon: Sparkles,
-  },
-  {
-    title: 'Systems over decoration',
-    copy: 'I use reusable components, layout rules, and clean state boundaries so the interface can grow without becoming fragile.',
-    icon: Layers3,
-  },
-  {
-    title: 'Engineering that holds up',
-    copy: 'I care about reliable APIs, readable data contracts, and implementation details that stay manageable after launch.',
-    icon: ShieldCheck,
-  },
-];
+import { ArrowUpRight } from 'lucide-react';
+import { siteConfig, stackGroups, timeline } from '../data/site';
+import SectionHeader from './SectionHeader';
+import GitHubActivity from './GitHubActivity';
+import { useReveal, useSplitReveal } from '../lib/motion';
 
 const About: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(() => {
-    if (!containerRef.current) return;
-
-    gsap.fromTo(
-      '.about-reveal',
-      { y: 44, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.82,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: containerRef.current, start: 'top 82%', once: true },
-      }
-    );
-  }, { scope: containerRef });
+  const scope = useRef<HTMLElement>(null);
+  useReveal(scope);
+  useSplitReveal(scope);
 
   return (
-    <section id="about" aria-labelledby="about-heading" className="section-shell bg-paper-50/78" ref={containerRef}>
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.88fr_1.12fr]">
-        <div className="about-reveal">
-          <span className="section-label">About</span>
-          <h2 id="about-heading" className="section-title mt-6">
-            A full stack developer with a product designer&apos;s eye for flow.
-          </h2>
-          <p className="section-copy mt-6">
-            I am {siteConfig.name}, based in {siteConfig.location}. I enjoy building web products that feel composed on the surface and disciplined underneath: clean UI, strong data handling, practical backend structure, and AI features that fit the workflow instead of feeling pasted on.
-          </p>
-          <a href="#contact" className="button-primary mt-8">
-            Start a project conversation
-            <ArrowUpRight className="h-4 w-4" />
-          </a>
+    <section ref={scope} id="about" aria-labelledby="about-heading" className="section">
+      <div className="container-x">
+        <SectionHeader index="03" label="About" id="about-heading" title="Engineer first, with an eye for the details people feel." />
+
+        <div className="mt-16 grid gap-16 md:mt-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-24">
+          <div className="space-y-6 text-[clamp(1.125rem,1.6vw,1.375rem)] leading-[1.55] tracking-[-0.015em] text-muted">
+            <p data-reveal>
+              <span className="text-fg">I’ve been pushing code to GitHub since 2020</span> — Discord bots first, then web apps, and now AI
+              agents and desktop software that people install on their own machines.
+            </p>
+            <p data-reveal>
+              I studied Computer Engineering, but most of what I know came from shipping: an esports tournament platform with live updates, team
+              builds where I led the work, and three months at ISRO turning satellite payload files into something you can explore in a
+              browser tab.
+            </p>
+            <p data-reveal>
+              I care about the unglamorous parts — approval flows, empty and error states, auto-updates, the installer that just works.
+              That is usually where software earns its trust.
+            </p>
+            <div data-reveal className="flex flex-wrap gap-x-8 gap-y-3 pt-4 text-[15px]">
+              <a href={siteConfig.homeResumeHref} className="link-underline inline-flex items-center gap-1.5 text-fg">
+                Read the résumé <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a href={siteConfig.linkedinUrl} target="_blank" rel="noopener noreferrer" className="link-underline inline-flex items-center gap-1.5 text-fg">
+                LinkedIn <ArrowUpRight className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <p data-reveal className="eyebrow">Experience &amp; education</p>
+            <ol className="mt-6 border-t border-line">
+              {timeline.map((entry) => (
+                <li key={entry.title + entry.period} data-reveal className="grid gap-2 border-b border-line py-7 sm:grid-cols-[140px_1fr] sm:gap-6">
+                  <span className="font-mono text-[12px] text-faint sm:pt-1.5">{entry.period}</span>
+                  <div>
+                    <h3 className="text-[19px] font-medium tracking-[-0.02em]">
+                      {entry.title}
+                      <span className="text-muted"> · {entry.org}</span>
+                    </h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted">{entry.copy}</p>
+                    {entry.href ? (
+                      <a
+                        href={entry.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link-underline mt-3 inline-flex items-center gap-1 font-mono text-[12px] text-fg"
+                      >
+                        {new URL(entry.href).hostname}
+                        <ArrowUpRight className="h-3.5 w-3.5" />
+                      </a>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
 
-        <div className="grid gap-4">
-          {principles.map(({ title, copy, icon: Icon }) => (
-            <article key={title} className="about-reveal surface-panel rounded-lg p-5 sm:p-6">
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-ink-950 text-paper-50">
-                  <Icon className="h-5 w-5" />
+        <div className="mt-24 grid gap-6 lg:mt-32 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+          <div data-reveal className="rounded-[24px] border border-line p-5 sm:p-6">
+            <p className="eyebrow">Toolbox</p>
+            <dl className="mt-4 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+              {stackGroups.map((group) => (
+                <div key={group.label} className="border-t border-line py-4">
+                  <dt className="font-mono text-[11.5px] uppercase text-faint">{group.label}</dt>
+                  <dd className="mt-2 text-[15px] leading-relaxed text-fg/90">{group.items.join(', ')}</dd>
                 </div>
-                <div>
-                  <h3 className="font-display text-2xl font-bold text-ink-950">{title}</h3>
-                  <p className="mt-3 text-base leading-8 text-ink-700">{copy}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-
-          <div className="about-reveal grid gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-ink-950/12 bg-night-950 p-5 text-paper-50">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent-teal">Best fit</p>
-              <p className="mt-4 text-lg font-extrabold leading-7">
-                Product teams that need a developer who can reason through UI, APIs, and user workflows together.
-              </p>
-            </div>
-            <div className="rounded-lg border border-ink-950/12 bg-white/72 p-5">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink-600">Current interest</p>
-              <p className="mt-4 text-lg font-extrabold leading-7 text-ink-950">
-                AI-assisted product experiences, data-heavy tools, and SaaS dashboards with excellent usability.
-              </p>
-            </div>
+              ))}
+            </dl>
+          </div>
+          <div data-reveal>
+            <GitHubActivity />
           </div>
         </div>
       </div>
