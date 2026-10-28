@@ -90,7 +90,7 @@ const Footer: React.FC<FooterProps> = ({ currentPage }) => {
         </div>
 
         <div className="mt-16 flex flex-wrap justify-between gap-4 border-t border-line py-6 font-mono text-[12px] text-faint">
-          <span>© {new Date().getFullYear()} {siteConfig.name}</span>
+          <span suppressHydrationWarning>© {new Date().getFullYear()} {siteConfig.name}</span>
         </div>
       </div>
 

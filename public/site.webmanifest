@@ -1,13 +1,17 @@
 {
-  "name": "Harsh Kolte Portfolio",
+  "name": "Harsh Kolte — Freelance Full-Stack & AI Developer",
   "short_name": "Harsh Kolte",
-  "description": "Portfolio and resume of Harsh Kolte, full stack React, Node.js, TypeScript, and AI product developer in Ahmedabad.",
+  "description": "Portfolio of Harsh Kolte, freelance full-stack developer in Ahmedabad, India, building AI agents, desktop apps and web products.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#05070d",
-  "theme_color": "#05070d",
-  "categories": ["portfolio", "developer", "resume"],
+  "background_color": "#0b0b0a",
+  "theme_color": "#0b0b0a",
+  "categories": [
+    "portfolio",
+    "developer",
+    "resume"
+  ],
   "lang": "en-IN",
   "icons": [
     {

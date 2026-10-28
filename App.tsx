@@ -5,6 +5,7 @@ import Projects from './components/Projects';
 import Archive from './components/Archive';
 import Services from './components/Services';
 import About from './components/About';
+import Faq from './components/Faq';
 import Contact from './components/Contact';
 import SiteShell from './components/SiteShell';
 
@@ -17,6 +18,7 @@ function App() {
       <Archive />
       <Services />
       <About />
+      <Faq />
       <Contact />
     </SiteShell>
   );

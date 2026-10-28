@@ -99,10 +99,10 @@ export const SplitWords: React.FC<{ text: string; className?: string; wordClassN
   className,
   wordClassName,
 }) => (
-  <span className={className} aria-label={text}>
+  <span className={className}>
     {text.split(' ').map((word, i, arr) => (
       <React.Fragment key={`${word}-${i}`}>
-        <span className="word-mask" aria-hidden="true">
+        <span className="word-mask">
           <span className={`split-word ${wordClassName ?? ''}`}>{word}</span>
         </span>
         {i < arr.length - 1 ? ' ' : null}
@@ -167,16 +167,19 @@ export const useMagnetic = <T extends HTMLElement>(strength = 0.25) => {
   return ref;
 };
 
-/** Live wall-clock time in a given IANA zone, updated every 15s. */
+/**
+ * Live wall-clock time in a given IANA zone, updated every 15s. Starts as a placeholder so
+ * prerendered markup (built at a different time) hydrates without a mismatch.
+ */
 export const useLocalTime = (timeZone: string) => {
-  const format = () =>
-    new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone }).format(new Date());
-  const [time, setTime] = useState(format);
+  const [time, setTime] = useState('--:--');
 
   useEffect(() => {
+    const format = () =>
+      new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone }).format(new Date());
+    setTime(format());
     const id = window.setInterval(() => setTime(format()), 15_000);
     return () => window.clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeZone]);
 
   return time;

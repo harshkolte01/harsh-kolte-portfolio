@@ -8,6 +8,7 @@ export const siteConfig = {
   lastName: 'Kolte',
   initials: 'HK',
   role: 'Full-stack engineer',
+  siteUrl: 'https://harsh-kolte-portfolio.vercel.app',
   email: 'harshkolte01@gmail.com',
   location: 'Ahmedabad, India',
   timeZone: 'Asia/Kolkata',
@@ -227,4 +228,27 @@ export const stackGroups = [
   { label: 'Data', items: ['PostgreSQL', 'Prisma', 'MongoDB', 'Firebase', 'S3 / MinIO'] },
   { label: 'AI', items: ['OpenAI & Claude APIs', 'MCP', 'E2B sandboxes', 'Whisper', 'Vanna'] },
   { label: 'Desktop & ops', items: ['Electron', 'GitHub Actions', 'Vercel', 'VPS', 'Cloudflare'] },
+];
+
+export const faqs = [
+  {
+    q: 'Are you available for freelance or contract work?',
+    a: 'Yes. I take on fixed-scope projects, monthly contracts and short one-to-two-week sprints, and keep the number of parallel projects small so each one gets real attention.',
+  },
+  {
+    q: 'What kind of projects do you build?',
+    a: 'AI agents and LLM features, full-stack web apps and SaaS MVPs, cross-platform desktop apps with Electron, and dashboards or data tools. Recent examples include AgentForge, CapturePro, WATabs and the HDF Viewer built at ISRO SAC.',
+  },
+  {
+    q: 'Which technologies do you work with?',
+    a: 'Mostly TypeScript, React and Next.js on the front end; Node.js, Express, FastAPI and Flask on the back end; PostgreSQL with Prisma, MongoDB and Firebase for data; Electron for desktop; and OpenAI and Claude APIs, MCP and E2B sandboxes for AI work.',
+  },
+  {
+    q: 'Where are you based, and do you work remotely?',
+    a: 'I’m based in Ahmedabad, India (IST, UTC+5:30) and work with clients remotely, with regular written updates and a working preview link every week.',
+  },
+  {
+    q: 'How do we get started?',
+    a: 'Send a short brief through the contact form or by email: what you’re building, who it’s for and when you need it. I’ll reply with questions, then a written scope with milestones and a quote.',
+  },
 ];

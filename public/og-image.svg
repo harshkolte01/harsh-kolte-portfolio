@@ -1,40 +1,40 @@
-<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#05070D"/>
-  <g opacity="0.16">
-    <path d="M80 0V630M200 0V630M320 0V630M440 0V630M560 0V630M680 0V630M800 0V630M920 0V630M1040 0V630M1160 0V630" stroke="#FBF7EE"/>
-    <path d="M0 70H1200M0 150H1200M0 230H1200M0 310H1200M0 390H1200M0 470H1200M0 550H1200" stroke="#FBF7EE"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Source for og-image.png. Fonts: Geist, Geist Mono, Instrument Serif (Google Fonts). -->
+  <defs>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <rect x="12" y="12" width="1.4" height="1.4" fill="#edece6" fill-opacity="0.14" />
+    </pattern>
+    <radialGradient id="fade" cx="0.72" cy="0.32" r="0.7">
+      <stop offset="0" stop-color="#fff" stop-opacity="1" />
+      <stop offset="1" stop-color="#fff" stop-opacity="0" />
+    </radialGradient>
+    <mask id="dotmask">
+      <rect width="1200" height="630" fill="url(#fade)" />
+    </mask>
+    <radialGradient id="glow" cx="1" cy="0" r="0.75">
+      <stop offset="0" stop-color="#ff5b24" stop-opacity="0.16" />
+      <stop offset="1" stop-color="#ff5b24" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0b0b0a" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <rect width="1200" height="630" fill="url(#dots)" mask="url(#dotmask)" />
+
+  <circle cx="114" cy="96" r="22" fill="#edece6" />
+  <text x="114" y="101.5" text-anchor="middle" font-family="Geist Mono" font-size="15" fill="#0b0b0a">HK</text>
+  <text x="152" y="104" font-family="Geist" font-weight="500" font-size="25" letter-spacing="-0.5" fill="#edece6">Harsh Kolte</text>
+
+  <circle cx="740" cy="96" r="5" fill="#4ade80" />
+  <text x="1108" y="102" text-anchor="end" font-family="Geist Mono" font-size="17" fill="#a3a29b">Open for freelance &amp; contract work</text>
+
+  <g font-family="Geist" font-weight="500" font-size="86" letter-spacing="-3.6" fill="#edece6">
+    <text x="88" y="296">I build AI agents,</text>
+    <text x="88" y="386"><tspan font-family="Instrument Serif" font-style="italic" font-weight="400" letter-spacing="-1" fill="#ff5b24">desktop apps</tspan> &amp; the web</text>
+    <text x="88" y="476">around them.</text>
   </g>
 
-  <rect x="70" y="70" width="1060" height="490" rx="8" fill="#0B1020" stroke="#FBF7EE" stroke-opacity="0.16" stroke-width="2"/>
-  <rect x="96" y="96" width="168" height="42" rx="8" fill="#13B8A6"/>
-  <text x="122" y="124" fill="#05070D" font-family="Manrope, Arial, sans-serif" font-size="15" font-weight="800" letter-spacing="2">AVAILABLE</text>
-
-  <text x="96" y="205" fill="#FBF7EE" font-family="Space Grotesk, Arial, sans-serif" font-size="72" font-weight="700">Harsh Kolte</text>
-  <text x="96" y="262" fill="#B8F052" font-family="Manrope, Arial, sans-serif" font-size="30" font-weight="800">Full Stack Developer | AI Product Builder</text>
-  <text x="96" y="315" fill="#CBD5E1" font-family="Manrope, Arial, sans-serif" font-size="24" font-weight="600">React interfaces, Node.js APIs, analytics dashboards, and AI-ready products.</text>
-
-  <rect x="96" y="385" width="205" height="58" rx="8" fill="#111A2D" stroke="#13B8A6" stroke-opacity="0.55"/>
-  <text x="120" y="421" fill="#FBF7EE" font-family="Manrope, Arial, sans-serif" font-size="18" font-weight="800">React Systems</text>
-  <rect x="318" y="385" width="176" height="58" rx="8" fill="#111A2D" stroke="#3F6DF6" stroke-opacity="0.55"/>
-  <text x="342" y="421" fill="#FBF7EE" font-family="Manrope, Arial, sans-serif" font-size="18" font-weight="800">Node APIs</text>
-  <rect x="511" y="385" width="206" height="58" rx="8" fill="#111A2D" stroke="#FF7A45" stroke-opacity="0.55"/>
-  <text x="535" y="421" fill="#FBF7EE" font-family="Manrope, Arial, sans-serif" font-size="18" font-weight="800">AI Workflows</text>
-
-  <g transform="translate(765 112)">
-    <rect width="310" height="360" rx="8" fill="#111A2D" stroke="#FBF7EE" stroke-opacity="0.18"/>
-    <rect x="22" y="22" width="68" height="10" rx="5" fill="#FF5F73"/>
-    <rect x="100" y="22" width="68" height="10" rx="5" fill="#FF7A45"/>
-    <rect x="178" y="22" width="68" height="10" rx="5" fill="#13B8A6"/>
-    <text x="22" y="77" fill="#13B8A6" font-family="IBM Plex Mono, Consolas, monospace" font-size="15" font-weight="700" letter-spacing="2">BUILD DESK</text>
-    <text x="22" y="123" fill="#FBF7EE" font-family="Space Grotesk, Arial, sans-serif" font-size="34" font-weight="700">Product system</text>
-    <text x="22" y="164" fill="#CBD5E1" font-family="Manrope, Arial, sans-serif" font-size="17" font-weight="600">UI, API, data, and AI layers</text>
-    <rect x="22" y="204" width="266" height="12" rx="6" fill="#25304A"/>
-    <rect x="22" y="204" width="232" height="12" rx="6" fill="#13B8A6"/>
-    <rect x="22" y="242" width="266" height="12" rx="6" fill="#25304A"/>
-    <rect x="22" y="242" width="210" height="12" rx="6" fill="#3F6DF6"/>
-    <rect x="22" y="280" width="266" height="12" rx="6" fill="#25304A"/>
-    <rect x="22" y="280" width="225" height="12" rx="6" fill="#B8F052"/>
-    <rect x="22" y="318" width="126" height="22" rx="8" fill="#13B8A6"/>
-    <text x="42" y="334" fill="#05070D" font-family="Manrope, Arial, sans-serif" font-size="12" font-weight="800">AHMEDABAD</text>
-  </g>
+  <rect x="92" y="534" width="1016" height="1" fill="#edece6" fill-opacity="0.12" />
+  <text x="92" y="578" font-family="Geist Mono" font-size="17" fill="#a3a29b">AgentForge · CapturePro · WATabs · HDF Viewer (ISRO SAC)</text>
+  <text x="1108" y="578" text-anchor="end" font-family="Geist Mono" font-size="17" fill="#edece6">Freelance full-stack developer</text>
 </svg>

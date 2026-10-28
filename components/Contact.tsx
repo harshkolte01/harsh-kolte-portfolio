@@ -83,7 +83,7 @@ const Contact: React.FC = () => {
     <section ref={scope} id="contact" aria-labelledby="contact-heading" className="section overflow-hidden">
       <div className="container-x">
         <div data-reveal className="flex items-center gap-4 border-t border-line pt-5">
-          <span className="eyebrow text-accent">(04)</span>
+          <span className="eyebrow text-accent">(05)</span>
           <span className="eyebrow">Contact</span>
         </div>
 

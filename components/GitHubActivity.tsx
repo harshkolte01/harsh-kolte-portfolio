@@ -31,8 +31,12 @@ const languageColor: Record<string, string> = {
 
 const relative = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
-const timeAgo = (iso: string) => {
-  const diff = (new Date(iso).getTime() - Date.now()) / 1000;
+const shortDate = new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+const timeAgo = (iso: string, now: number | null) => {
+  // Before mount there is no trustworthy "now" (the markup is prerendered), so show a fixed date.
+  if (now === null) return shortDate.format(new Date(iso));
+  const diff = (new Date(iso).getTime() - now) / 1000;
   const steps: [Intl.RelativeTimeFormatUnit, number][] = [
     ['year', 31_536_000],
     ['month', 2_592_000],
@@ -50,8 +54,10 @@ const timeAgo = (iso: string) => {
 const GitHubActivity: React.FC = () => {
   const [repos, setRepos] = useState<Repo[]>(fallback);
   const [live, setLive] = useState(false);
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
+    setNow(Date.now());
     const controller = new AbortController();
     fetch(`https://api.github.com/users/${siteConfig.githubUser}/repos?sort=pushed&per_page=20`, { signal: controller.signal })
       .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
@@ -93,7 +99,7 @@ const GitHubActivity: React.FC = () => {
                 <span className="truncate font-mono text-[13px] text-fg transition-colors group-hover:text-accent">{repo.name}</span>
               </span>
               <span className="flex shrink-0 items-center gap-2 font-mono text-[11.5px] text-faint">
-                <time dateTime={repo.pushed_at}>{timeAgo(repo.pushed_at)}</time>
+                <time dateTime={repo.pushed_at}>{timeAgo(repo.pushed_at, now)}</time>
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </span>
             </a>

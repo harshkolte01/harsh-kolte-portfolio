@@ -16,9 +16,15 @@ const ResumePage: React.FC = () => {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
-      gsap.from('.split-word', { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.05 });
-      gsap.from('.resume-reveal', { y: 28, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.07, delay: 0.25 });
+      const release = () => document.documentElement.classList.remove('js-anim');
+      if (prefersReducedMotion()) return release();
+      gsap.fromTo('.resume-title .split-word', { yPercent: 110, y: 0 }, { yPercent: 0, y: 0, duration: 1.3, ease: 'expo.out', stagger: 0.05 });
+      gsap.fromTo(
+        '.resume-reveal',
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: 0.07, delay: 0.25 }
+      );
+      release();
     },
     { scope }
   );
@@ -43,7 +49,7 @@ const ResumePage: React.FC = () => {
       <header className="flex flex-col gap-10 pb-12 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="resume-reveal eyebrow">Résumé · updated 2026</p>
-          <h1 className="display mt-6 text-[clamp(3rem,8vw,7rem)]">
+          <h1 className="resume-title display mt-6 text-[clamp(3rem,8vw,7rem)]">
             <SplitWords text={siteConfig.name} />
           </h1>
           <p className="resume-reveal lede mt-6 max-w-[52ch]">

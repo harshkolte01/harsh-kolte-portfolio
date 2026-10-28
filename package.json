@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "node scripts/generate-seo-files.mjs",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

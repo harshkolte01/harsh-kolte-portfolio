@@ -417,6 +417,27 @@ body {
   }
 }
 
+/* ---------- Intro gating ----------
+   An inline script in each page's <head> adds `js-anim` before first paint (unless reduced motion
+   is preferred). It keeps prerendered intro content hidden until GSAP takes over, and is removed
+   by the page's intro timeline, or after a timeout if scripts fail to load. */
+
+html.js-anim .hero-meta,
+html.js-anim .hero-fade,
+html.js-anim .hero-fact,
+html.js-anim .resume-reveal {
+  opacity: 0;
+}
+
+html.js-anim .hero-title .split-word,
+html.js-anim .resume-title .split-word {
+  transform: translateY(110%);
+}
+
+html.js-anim .hero-rule {
+  transform: scaleX(0);
+}
+
 /* ---------- Motion preferences ---------- */
 
 @media (prefers-reduced-motion: reduce) {

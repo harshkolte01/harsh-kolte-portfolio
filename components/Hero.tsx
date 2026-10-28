@@ -18,13 +18,22 @@ const Hero: React.FC = () => {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
+      // index.html hides these with `html.js-anim` before first paint so prerendered markup never
+      // flashes; explicit fromTo end states take over from that CSS, then the class is dropped.
+      const release = () => document.documentElement.classList.remove('js-anim');
+      if (prefersReducedMotion()) return release();
       const tl = gsap.timeline({ defaults: { ease: EASE } });
-      tl.from('.hero-meta', { y: 16, opacity: 0, duration: 1, stagger: 0.06 })
-        .from('.hero-title .split-word', { yPercent: 110, duration: 1.4, stagger: 0.05 }, 0.1)
-        .from('.hero-fade', { y: 24, opacity: 0, duration: 1.2, stagger: 0.08 }, 0.6)
-        .from('.hero-fact', { y: 20, opacity: 0, duration: 1, stagger: 0.06 }, 0.85)
-        .from('.hero-rule', { scaleX: 0, transformOrigin: 'left center', duration: 1.6, ease: 'expo.inOut' }, 0.5);
+      tl.fromTo('.hero-meta', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.06 })
+        .fromTo('.hero-title .split-word', { yPercent: 110, y: 0 }, { yPercent: 0, y: 0, duration: 1.4, stagger: 0.05 }, 0.1)
+        .fromTo('.hero-fade', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: 0.08 }, 0.6)
+        .fromTo('.hero-fact', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.06 }, 0.85)
+        .fromTo(
+          '.hero-rule',
+          { scaleX: 0, scaleY: 1, transformOrigin: 'left center' },
+          { scaleX: 1, duration: 1.6, ease: 'expo.inOut' },
+          0.5
+        );
+      release();
 
       // Content drifts up and dims slightly as the hero scrolls away.
       gsap.to('.hero-inner', {
@@ -49,12 +58,12 @@ const Hero: React.FC = () => {
         </div>
 
         <div className="flex flex-1 flex-col justify-center py-16 md:py-20">
-          <p className="hero-fade mb-8 inline-flex items-center gap-3 text-[14px] text-muted md:mb-10">
-            <span className="status-dot" aria-hidden="true" />
-            {siteConfig.availability}
-          </p>
-
           <h1 id="hero-heading" className="hero-title display max-w-[15ch] text-[clamp(3rem,9.2vw,9.5rem)]">
+            <span className="hero-fade mb-8 flex items-center gap-3 font-sans text-[14px] font-normal leading-normal tracking-normal text-muted md:mb-10">
+              <span className="status-dot shrink-0" aria-hidden="true" />
+              {siteConfig.name} — freelance full-stack developer
+            </span>
+            {' '}
             <SplitWords text="I build AI agents," />{' '}
             <SplitWords text="desktop apps" wordClassName="serif-em text-accent" />{' '}
             <SplitWords text="& the web around them." />
